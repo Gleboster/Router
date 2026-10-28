@@ -4,6 +4,11 @@ namespace Router.Implementations;
 
 public class Router : IRouter
 {
+    public void RegisterRoute(string template, Action action)
+    {
+        throw new NotImplementedException();
+    }
+
     public void RegisterRoute<T1>(string template, Action<T1> action)
     {
         throw new NotImplementedException();

@@ -2,6 +2,12 @@
 
 public interface IRouter
 {
+    /// <summary>
+    /// регистрирует маршрут и обработчик без параметров
+    /// </summary>
+    /// <param name="template">шаблон</param>
+    /// <param name="action">обработчик</param>
+    void RegisterRoute(string template, Action action);
 
     /// <summary>
     /// регистрирует маршрут
