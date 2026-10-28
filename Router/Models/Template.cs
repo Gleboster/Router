@@ -22,6 +22,8 @@ public sealed class Template
 
         variablesByName = variablesByPosition.ToDictionary(
             variable => variable.Name);
+
+        //TODO проверка на order соответсвует variablesByPosition (в компляторе возможно провписать)
     }
 
     public RouteVariable GetVariableByName(string name)
