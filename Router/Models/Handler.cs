@@ -16,17 +16,6 @@ public sealed class Handler
         IEnumerable<RouteVariable> variables)
     {
         this.action = action;
-        //TODO Отдать на HandlerCompiler variablesByPosition = action
-        //    .GetType()
-        //    .GetMethod("Invoke")!
-        //    .GetParameters()
-        //    .Select(p => new RouteVariable(
-        //        Name: p.Name, 
-        //        Type: p.ParameterType, 
-        //        Order: p.Position))
-        //    .ToArray();
-
-        //TODO проверка на order соответсвует variablesByPosition (в компляторе возможно провписать)
 
         variablesByPosition = variables.ToArray();
 
