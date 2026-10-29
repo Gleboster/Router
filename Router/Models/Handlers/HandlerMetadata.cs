@@ -1,9 +1,10 @@
-﻿using System.Reflection;
+﻿using Router.Models.Variables;
+using System.Reflection;
 
-namespace Router.Models;
+namespace Router.Models.Handlers;
 
 
-public sealed class Handler
+public sealed class HandlerMetadata
 {
     private readonly Delegate action;
     private readonly Dictionary<string, RouteVariable> variablesByName;
@@ -11,7 +12,7 @@ public sealed class Handler
 
     public int CountParameters => variablesByPosition.Length;
 
-    public Handler(
+    public HandlerMetadata(
         Delegate action,
         IEnumerable<RouteVariable> variables)
     {

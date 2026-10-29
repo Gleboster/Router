@@ -1,5 +1,4 @@
-﻿
-using Router.Models;
+﻿using Router.Models.Templates;
 
 namespace Router.Components.Compilers;
 

@@ -1,11 +1,12 @@
 ﻿
 using Router.Models;
+using Router.Models.Handlers;
 
 namespace Router.Components.Compilers;
 
 public class HandlerCompiler
 {
-    public Handler Compile(Delegate action)
+    public HandlerMetadata Compile(Delegate action)
     {
         var variables = action
             .GetType()
@@ -17,7 +18,7 @@ public class HandlerCompiler
                 Order: p.Position)
             );
 
-        return new Handler(
+        return new HandlerMetadata(
             action,
             variables
         );

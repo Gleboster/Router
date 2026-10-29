@@ -1,6 +1,7 @@
-﻿using System.Text.RegularExpressions;
+﻿using Router.Models.Variables;
+using System.Text.RegularExpressions;
 
-namespace Router.Models;
+namespace Router.Models.Templates;
 
 public sealed class Template
 {
