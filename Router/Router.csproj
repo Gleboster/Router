@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="Components\Binding\" />
     <Folder Include="Components\Execution\" />
-    <Folder Include="Components\Registry\" />
     <Folder Include="Factories\" />
   </ItemGroup>
 
