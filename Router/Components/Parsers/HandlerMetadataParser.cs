@@ -4,9 +4,9 @@ using Router.Models.Variables;
 
 namespace Router.Components.Compilers;
 
-public class HandlerCompiler
+public class HandlerMetadataParser
 {
-    public HandlerMetadata Compile(Delegate action)
+    public HandlerMetadata Parse(Delegate action)
     {
         var variables = action
             .GetType()
