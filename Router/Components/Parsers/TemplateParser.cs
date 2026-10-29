@@ -26,12 +26,12 @@ public class TemplateParser
         return new Template(segments, variables);
     }
 
-    public (IEnumerable<Segment>, IEnumerable<RouteVariable>) SegmentTemplate(string template)
+    public (IEnumerable<TemplateSegment>, IEnumerable<RouteVariable>) SegmentTemplate(string template)
     {
         if (string.IsNullOrWhiteSpace(template))
             throw new ArgumentException("Template cannot be empty", nameof(template));
 
-        var segments = new List<Segment>();
+        var segments = new List<TemplateSegment>();
         var variables = new List<RouteVariable>();
 
         var parts = template.Split('/', StringSplitOptions.RemoveEmptyEntries);

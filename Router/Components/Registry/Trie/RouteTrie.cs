@@ -21,7 +21,7 @@ public sealed class RouteTrie
 
         foreach (var segment in segments)
         {
-            var templateSegment = (TemplateSegment)segment;
+            var templateSegment = segment;
             var childNode = FindOrCreateChild(currentNode, templateSegment);
             currentNode = childNode;
         }

@@ -9,15 +9,15 @@ public sealed class Template
 {
     private readonly FrozenDictionary<string, RouteVariable> variablesByName;
 
-    private readonly ReadOnlyCollection<Segment> segments;
+    private readonly ReadOnlyCollection<TemplateSegment> segments;
 
-    public IReadOnlyList<Segment> Segments => segments;
+    public IReadOnlyList<TemplateSegment> Segments => segments;
 
 
     public int CountVariables => variablesByName.Count;
 
     public Template(
-        IEnumerable<Segment> segments, 
+        IEnumerable<TemplateSegment> segments, 
         IEnumerable<RouteVariable> variables)
     {
         this.segments = segments.ToList().AsReadOnly();
