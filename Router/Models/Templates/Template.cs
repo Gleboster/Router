@@ -1,4 +1,5 @@
 ﻿using Router.Models.Variables;
+using System.Collections.Frozen;
 using System.Text.RegularExpressions;
 
 namespace Router.Models.Templates;
@@ -6,10 +7,9 @@ namespace Router.Models.Templates;
 public sealed class Template
 {
     private readonly Regex regex;
-    private readonly Dictionary<string, RouteVariable> variablesByName;
-    private readonly RouteVariable[] variablesByPosition;
+    private readonly FrozenDictionary<string, RouteVariable> variablesByName;
 
-    public int CountVariables => variablesByPosition.Length;
+    public int CountVariables => variablesByName.Count;
 
     public Regex Regex => regex;
 
@@ -19,21 +19,10 @@ public sealed class Template
     {
         this.regex = regex;
 
-        variablesByPosition = variables.ToArray();
-
-        variablesByName = variablesByPosition.ToDictionary(
+        variablesByName = variables.ToFrozenDictionary(
             variable => variable.Name);
-
-        //TODO проверка на order соответсвует variablesByPosition (в компляторе возможно провписать)
     }
 
-    public RouteVariable GetVariableByName(string name)
-    {
-        return variablesByName[name];
-    }
-
-    public RouteVariable GetVariableByOrder(int order)
-    {
-        return variablesByPosition[order];
-    }
+    public RouteVariable GetVariableByName(string name) 
+        => variablesByName[name];
 }

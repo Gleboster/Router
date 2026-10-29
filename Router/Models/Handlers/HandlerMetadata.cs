@@ -1,4 +1,5 @@
 ﻿using Router.Models.Variables;
+using System.Collections.Frozen;
 using System.Reflection;
 
 namespace Router.Models.Handlers;
@@ -7,10 +8,9 @@ namespace Router.Models.Handlers;
 public sealed class HandlerMetadata
 {
     private readonly Delegate action;
-    private readonly Dictionary<string, RouteVariable> variablesByName;
-    private readonly RouteVariable[] variablesByPosition;
+    private readonly FrozenDictionary<string, RouteVariable> variablesByName;
 
-    public int CountParameters => variablesByPosition.Length;
+    public int CountParameters => variablesByName.Count;
 
     public HandlerMetadata(
         Delegate action,
@@ -18,19 +18,13 @@ public sealed class HandlerMetadata
     {
         this.action = action;
 
-        variablesByPosition = variables.ToArray();
-
-        variablesByName = variablesByPosition.ToDictionary(
+        variablesByName = variables.ToFrozenDictionary(
             variable => variable.Name);
     }
 
-    public RouteVariable GetVariableByName(string name)
-    {
-        return variablesByName[name];
-    }
+    public IReadOnlyCollection<RouteVariable> GetVariables() 
+        => variablesByName.Values;
 
-    public RouteVariable GetVariableByOrder(int order)
-    {
-        return variablesByPosition[order];
-    }
+    public RouteVariable GetVariableByName(string name) 
+        => variablesByName[name];
 }

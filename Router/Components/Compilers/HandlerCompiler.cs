@@ -1,6 +1,6 @@
 ﻿
-using Router.Models;
 using Router.Models.Handlers;
+using Router.Models.Variables;
 
 namespace Router.Components.Compilers;
 
@@ -14,8 +14,7 @@ public class HandlerCompiler
             .GetParameters()
             .Select(p => new RouteVariable(
                 Name: p.Name,
-                Type: p.ParameterType,
-                Order: p.Position)
+                Type: p.ParameterType)
             );
 
         return new HandlerMetadata(
