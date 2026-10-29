@@ -9,8 +9,7 @@ public class HandlerMetadataParser
     public HandlerMetadata Parse(Delegate action)
     {
         var variables = action
-            .GetType()
-            .GetMethod("Invoke")!
+            .Method
             .GetParameters()
             .Select(p => new RouteVariable(
                 Name: p.Name,
