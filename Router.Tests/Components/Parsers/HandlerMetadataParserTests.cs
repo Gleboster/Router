@@ -9,6 +9,8 @@ public sealed class HandlerMetadataParserTests
 {
     private readonly HandlerMetadataParser _parser = new();
 
+    #region Parameter Count Tests
+
     [Fact]
     public void Parse_ActionWithNoParameters_ReturnsZeroVariables()
     {
@@ -38,6 +40,10 @@ public sealed class HandlerMetadataParserTests
 
         Assert.Equal(2, metadata.CountParameters);
     }
+
+    #endregion
+
+    #region Variable Creation Tests
 
     [Fact]
     public void Parse_ActionWithIntParameter_CreatesCorrectVariable()
@@ -72,6 +78,10 @@ public sealed class HandlerMetadataParserTests
         Assert.Equal(typeof(Guid), sessionIdVar.Type);
     }
 
+    #endregion
+
+    #region Type Handling Tests
+
     [Theory]
     [InlineData(typeof(int))]
     [InlineData(typeof(string))]
@@ -101,6 +111,10 @@ public sealed class HandlerMetadataParserTests
         Assert.Equal(parameterType, variable.Type);
     }
 
+    #endregion
+
+    #region GetVariables Tests
+
     [Fact]
     public void Parse_GetVariables_ReturnsAllVariables()
     {
@@ -127,6 +141,10 @@ public sealed class HandlerMetadataParserTests
         Assert.Equal("third", variables[2].Name);
     }
 
+    #endregion
+
+    #region Error Handling Tests
+
     [Fact]
     public void Parse_GetVariableByName_ThrowsWhenNotFound()
     {
@@ -137,6 +155,10 @@ public sealed class HandlerMetadataParserTests
         Assert.Throws<KeyNotFoundException>(() =>
             metadata.GetVariableByName("nonexistent"));
     }
+
+    #endregion
+
+    #region Different Delegate Types Tests
 
     [Fact]
     public void Parse_FuncDelegate_ParsesCorrectly()
@@ -173,7 +195,7 @@ public sealed class HandlerMetadataParserTests
     {
         void foo(int id)
         {
-            
+
         }
 
         Action<int> handler = foo;
@@ -186,7 +208,13 @@ public sealed class HandlerMetadataParserTests
         Assert.Equal(typeof(int), variable.Type);
     }
 
+    #endregion
+
+    #region Helper Methods
+
     private void DummyMethod<T>(T param) { }
 
     private delegate void CustomHandler(int a, string b);
+
+    #endregion
 }

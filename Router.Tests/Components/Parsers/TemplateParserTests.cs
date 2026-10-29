@@ -9,6 +9,8 @@ public sealed class TemplateParserTests
 {
     private readonly TemplateParser _parser = new();
 
+    #region Parsing Static Segments
+
     [Fact]
     public void Parse_StaticSegments_ReturnsCorrectSegments()
     {
@@ -22,6 +24,10 @@ public sealed class TemplateParserTests
         Assert.Equal("bar", segments[1].Value);
         Assert.Equal("baz", segments[2].Value);
     }
+
+    #endregion
+
+    #region Parsing Dynamic Segments
 
     [Fact]
     public void Parse_DynamicSegments_ReturnsCorrectSegments()
@@ -65,6 +71,10 @@ public sealed class TemplateParserTests
         Assert.Equal(expectedType, dynamicSegment.RouteVariable.Type);
     }
 
+    #endregion
+
+    #region Variable Handling
+
     [Fact]
     public void Parse_MultipleParameters_ReturnsCorrectVariableCount()
     {
@@ -95,6 +105,10 @@ public sealed class TemplateParserTests
         Assert.Equal(typeof(Guid), postIdVariable.Type);
     }
 
+    #endregion
+
+    #region Error Handling
+
     [Theory]
     [InlineData("")]
     [InlineData(" ")]
@@ -116,6 +130,10 @@ public sealed class TemplateParserTests
         Assert.Equal("template", exception.ParamName);
     }
 
+    #endregion
+
+    #region SegmentTemplate Method
+
     [Fact]
     public void SegmentTemplate_ReturnsSegmentsAndVariables()
     {
@@ -130,6 +148,10 @@ public sealed class TemplateParserTests
         Assert.Equal("id", variableList[0].Name);
         Assert.Equal(typeof(int), variableList[0].Type);
     }
+
+    #endregion
+
+    #region Slash Handling
 
     [Fact]
     public void Parse_TrailingSlash_ParsesCorrectly()
@@ -155,6 +177,10 @@ public sealed class TemplateParserTests
         Assert.Equal(2, template.Segments.Count);
     }
 
+    #endregion
+
+    #region Complex Templates
+
     [Fact]
     public void Parse_ComplexTemplate_ParsesCorrectly()
     {
@@ -171,4 +197,6 @@ public sealed class TemplateParserTests
         Assert.Equal(typeof(int), postIdVar.Type);
         Assert.Equal(typeof(int), commentIdVar.Type);
     }
+
+    #endregion
 }

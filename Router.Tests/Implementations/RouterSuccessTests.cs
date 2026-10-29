@@ -7,6 +7,8 @@ public sealed class RouterSuccessTests
 {
     private readonly RouterFixture _fixture = new();
 
+    #region Static Routes
+
     [Fact]
     public void Register_StaticRoute_InvokesHandler()
     {
@@ -18,6 +20,10 @@ public sealed class RouterSuccessTests
 
         Assert.True(called);
     }
+
+    #endregion
+
+    #region Single Parameter Routes
 
     [Fact]
     public void Register_IntParameter_PassesParsedValue()
@@ -34,6 +40,10 @@ public sealed class RouterSuccessTests
 
         Assert.Equal(42, result);
     }
+
+    #endregion
+
+    #region Multiple Parameters Routes
 
     [Fact]
     public void Register_MultipleParameters_PassesValuesInOrder()
@@ -66,4 +76,6 @@ public sealed class RouterSuccessTests
 
         Assert.Equal((10, 20), result);
     }
+
+    #endregion
 }

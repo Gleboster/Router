@@ -7,6 +7,8 @@ public sealed class RouterErrorTests
 {
     private readonly RouterFixture _fixture = new();
 
+    #region Unknown Route Errors
+
     [Fact]
     public void Invoke_UnknownRoute_Throws()
     {
@@ -16,6 +18,10 @@ public sealed class RouterErrorTests
             () => router.Route("/unknown/")
         );
     }
+
+    #endregion
+
+    #region Parameter Type Errors
 
     [Fact]
     public void Invoke_InvalidIntParameter_Throws()
@@ -31,6 +37,10 @@ public sealed class RouterErrorTests
             () => router.Route("/foo/not-an-int/")
         );
     }
+
+    #endregion
+
+    #region Registration Errors
 
     [Fact]
     public void Register_UnknownParameterType_Throws()
@@ -57,4 +67,6 @@ public sealed class RouterErrorTests
             )
         );
     }
+
+    #endregion
 }

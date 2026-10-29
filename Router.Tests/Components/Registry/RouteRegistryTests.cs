@@ -20,7 +20,7 @@ public sealed class RouteRegistryTests
         _handlerParser = new HandlerMetadataParser();
     }
 
-    #region Section 1.1: Статические маршруты
+    #region Static Routes
 
     [Fact]
     public void Save_StaticRoute_CanBeResolved()
@@ -90,7 +90,7 @@ public sealed class RouteRegistryTests
 
     #endregion
 
-    #region Section 1.2: Маршруты с параметрами
+    #region Dynamic Routes
 
     [Fact]
     public void Save_RouteWithIntParameter_CanBeResolved()
@@ -134,7 +134,7 @@ public sealed class RouteRegistryTests
 
     #endregion
 
-    #region Section 1.3: Комбинированные маршруты
+    #region Combined Routes
 
     [Fact]
     public void Save_RouteWithMultipleParameters_CanBeResolved()
@@ -174,7 +174,7 @@ public sealed class RouteRegistryTests
 
     #endregion
 
-    #region Section 1.4: Приоритет регистрации
+    #region Registration Priority
 
     [Fact]
     public void Save_DynamicRouteRegisteredFirst_TakesPrecedenceOverStaticRoute()
@@ -235,7 +235,7 @@ public sealed class RouteRegistryTests
 
     #endregion
 
-    #region Section 3.1: Пустые и простые маршруты
+    #region Edge Cases
 
     [Fact]
     public void Save_RootRoute_CanBeResolved()
@@ -287,7 +287,7 @@ public sealed class RouteRegistryTests
 
     #endregion
 
-    #region Section 3.2: Множественные параметры
+    #region Multiple Parameters
 
     [Fact]
     public void Save_RouteWithThreeConsecutiveIntParameters_CanBeResolved()
@@ -327,7 +327,7 @@ public sealed class RouteRegistryTests
 
     #endregion
 
-    #region Section 3.3: Trailing slash
+    #region Trailing Slash
 
     [Fact]
     public void Save_RouteWithTrailingSlash_MatchesRouteWithoutTrailingSlash()
