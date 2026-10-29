@@ -13,6 +13,7 @@
     <Folder Include="Components\Execution\" />
     <Folder Include="Components\Registry\" />
     <Folder Include="Factories\" />
+    <Folder Include="Models\Новая папка\" />
   </ItemGroup>
 
 </Project>
