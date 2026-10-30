@@ -11,6 +11,7 @@ public sealed class HandlerMetadata
     private readonly FrozenDictionary<string, RouteVariable> variablesByName;
 
     public int CountParameters => variablesByName.Count;
+    public Delegate Action => action;
 
     public HandlerMetadata(
         Delegate action,
