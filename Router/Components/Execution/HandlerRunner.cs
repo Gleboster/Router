@@ -8,7 +8,15 @@ public class HandlerRunner
     public void RunHandle(HandlerMetadata handlerMetadata, ModelBindResult modelBindResult)
     {
         var args = GetArgs(handlerMetadata, modelBindResult);
+
         handlerMetadata.Action.DynamicInvoke(args);
+    }
+
+    public async Task RunHandleAsync(HandlerMetadata handlerMetadata, ModelBindResult modelBindResult)
+    {
+        var args = GetArgs(handlerMetadata, modelBindResult);
+
+        await Task.Run(() => handlerMetadata.Action.DynamicInvoke(args));
     }
 
     private object[] GetArgs(HandlerMetadata handlerMetadata, ModelBindResult modelBindResult)

@@ -6,6 +6,7 @@ using Router.Components.Parsers;
 using Router.Components.Registry;
 using Router.Components.Validation;
 using Router.Models.Registrations;
+using System.Threading.Tasks;
 
 namespace Router.Implementations;
 
@@ -64,6 +65,20 @@ public class Router : IRouter
         var modelBindResult = modelBinder.ModelBind(templateObj, routeObj);
 
         handlerRunner.RunHandle(handlerObj, modelBindResult);
+    }
+
+    public async Task RouteAsync(string route)
+    {
+        var routeObj = routeParser.Parse(route);
+
+        var routeRegistartion = routeRegistry.ResolveRoute(routeObj);
+
+        var templateObj = routeRegistartion.Template;
+        var handlerObj = routeRegistartion.Handler;
+
+        var modelBindResult = modelBinder.ModelBind(templateObj, routeObj);
+
+        await handlerRunner.RunHandleAsync(handlerObj, modelBindResult);
     }
 
     private void RegistrationRoute(string template, Delegate action)
