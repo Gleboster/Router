@@ -132,25 +132,6 @@ public sealed class TemplateParserTests
 
     #endregion
 
-    #region SegmentTemplate Method
-
-    [Fact]
-    public void SegmentTemplate_ReturnsSegmentsAndVariables()
-    {
-        var (segments, variables) = _parser.SegmentTemplate("/foo/{id:int}/bar");
-
-        var segmentList = segments.ToList();
-        var variableList = variables.ToList();
-
-        Assert.Equal(3, segmentList.Count);
-        Assert.Single(variableList);
-
-        Assert.Equal("id", variableList[0].Name);
-        Assert.Equal(typeof(int), variableList[0].Type);
-    }
-
-    #endregion
-
     #region Slash Handling
 
     [Fact]

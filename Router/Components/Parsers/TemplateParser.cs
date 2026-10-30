@@ -26,7 +26,7 @@ public class TemplateParser
         return new Template(segments, variables);
     }
 
-    public (IEnumerable<TemplateSegment>, IEnumerable<RouteVariable>) SegmentTemplate(string template)
+    private (IEnumerable<TemplateSegment>, IEnumerable<RouteVariable>) SegmentTemplate(string template)
     {
         if (string.IsNullOrWhiteSpace(template))
             throw new ArgumentException("Template cannot be empty", nameof(template));
