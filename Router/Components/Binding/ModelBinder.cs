@@ -1,4 +1,5 @@
-﻿using Router.DTOs.ModelBinding;
+﻿using Router.DTOs;
+using Router.DTOs.ModelBinding;
 using Router.Models.Routes;
 using Router.Models.Segments;
 using Router.Models.Templates;
@@ -10,7 +11,7 @@ public class ModelBinder
 {
     public ModelBindResult ModelBind(Template template, Route route)
     {
-        var boundObjects = new List<IModelBindObject>();
+        var boundObjects = new List<ModelBindObject>();
 
         int routeIndex = 0;
 
@@ -30,7 +31,7 @@ public class ModelBinder
                     throw new ArgumentException(
                         $"Cannot convert value '{routeSegment.Value}' to type {variable.Type.Name} for parameter '{variable.Name}'.");
 
-                var boundObject = CreateModelBindObject(variable.Name, variable.Type, parsedValue);
+                var boundObject = new ModelBindObject(variable.Name, variable.Type, parsedValue);
                 boundObjects.Add(boundObject);
             }
 
@@ -38,11 +39,5 @@ public class ModelBinder
         }
 
         return new ModelBindResult(boundObjects);
-    }
-
-    private static IModelBindObject CreateModelBindObject(string name, Type type, object value)
-    {
-        var modelBindObjectType = typeof(ModelBindObject<>).MakeGenericType(type);
-        return (IModelBindObject)Activator.CreateInstance(modelBindObjectType, name, value)!;
     }
 }

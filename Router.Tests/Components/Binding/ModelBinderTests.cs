@@ -22,7 +22,7 @@ public sealed class ModelBinderTests
 
         var result = _binder.ModelBind(template, route);
 
-        Assert.Equal(42, result.GetValueByName<int>("id"));
+        Assert.Equal(42, result.GetValueByNameWithType("id", typeof(int)));
     }
 
     [Fact]
@@ -33,7 +33,7 @@ public sealed class ModelBinderTests
 
         var result = _binder.ModelBind(template, route);
 
-        Assert.Equal("john", result.GetValueByName<string>("name"));
+        Assert.Equal("john", result.GetValueByNameWithType("name", typeof(string)));
     }
 
     [Fact]
@@ -45,7 +45,7 @@ public sealed class ModelBinderTests
 
         var result = _binder.ModelBind(template, route);
 
-        Assert.Equal(expectedGuid, result.GetValueByName<Guid>("id"));
+        Assert.Equal(expectedGuid, result.GetValueByNameWithType("id", typeof(Guid)));
     }
 
     [Fact]
@@ -56,7 +56,7 @@ public sealed class ModelBinderTests
 
         var result = _binder.ModelBind(template, route);
 
-        Assert.Equal(19.99f, result.GetValueByName<float>("value"), precision: 2);
+        Assert.Equal(19.99f, (float)result.GetValueByNameWithType("value", typeof(float)), precision: 2);
     }
 
     [Fact]
@@ -68,7 +68,7 @@ public sealed class ModelBinderTests
 
         var result = _binder.ModelBind(template, route);
 
-        Assert.Equal(expectedDate, result.GetValueByName<DateTime>("when"));
+        Assert.Equal(expectedDate, result.GetValueByNameWithType("when", typeof(DateTime)));
     }
 
     #endregion
@@ -83,8 +83,8 @@ public sealed class ModelBinderTests
 
         var result = _binder.ModelBind(template, route);
 
-        Assert.Equal(10, result.GetValueByName<int>("a"));
-        Assert.Equal(20, result.GetValueByName<int>("b"));
+        Assert.Equal(10, result.GetValueByNameWithType("a", typeof(int)));
+        Assert.Equal(20, result.GetValueByNameWithType("b", typeof(int)));
     }
 
     [Fact]
@@ -96,8 +96,8 @@ public sealed class ModelBinderTests
 
         var result = _binder.ModelBind(template, route);
 
-        Assert.Equal(123, result.GetValueByName<int>("id"));
-        Assert.Equal(expectedGuid, result.GetValueByName<Guid>("guid"));
+        Assert.Equal(123, result.GetValueByNameWithType("id", typeof(int)));
+        Assert.Equal(expectedGuid, result.GetValueByNameWithType("guid", typeof(Guid)));
     }
 
     [Fact]
@@ -108,9 +108,9 @@ public sealed class ModelBinderTests
 
         var result = _binder.ModelBind(template, route);
 
-        Assert.Equal(1, result.GetValueByName<int>("x"));
-        Assert.Equal("test", result.GetValueByName<string>("y"));
-        Assert.Equal(3.14f, result.GetValueByName<float>("z"), precision: 2);
+        Assert.Equal(1, result.GetValueByNameWithType("x", typeof(int)));
+        Assert.Equal("test", result.GetValueByNameWithType("y", typeof(string)));
+        Assert.Equal(3.14f, (float)result.GetValueByNameWithType("z", typeof(float)), precision: 2);
     }
 
     #endregion
@@ -125,7 +125,7 @@ public sealed class ModelBinderTests
 
         var result = _binder.ModelBind(template, route);
 
-        Assert.Equal(42, result.GetValueByName<int>("id"));
+        Assert.Equal(42, result.GetValueByNameWithType("id", typeof(int)));
     }
 
     [Fact]
@@ -136,8 +136,8 @@ public sealed class ModelBinderTests
 
         var result = _binder.ModelBind(template, route);
 
-        Assert.Equal(123, result.GetValueByName<int>("id"));
-        Assert.Equal("john", result.GetValueByName<string>("name"));
+        Assert.Equal(123, result.GetValueByNameWithType("id", typeof(int)));
+        Assert.Equal("john", result.GetValueByNameWithType("name", typeof(string)));
     }
 
     [Fact]
@@ -148,8 +148,8 @@ public sealed class ModelBinderTests
 
         var result = _binder.ModelBind(template, route);
 
-        Assert.Equal(10, result.GetValueByName<int>("x"));
-        Assert.Equal(20, result.GetValueByName<int>("y"));
+        Assert.Equal(10, result.GetValueByNameWithType("x", typeof(int)));
+        Assert.Equal(20, result.GetValueByNameWithType("y", typeof(int)));
     }
 
     #endregion
@@ -175,7 +175,7 @@ public sealed class ModelBinderTests
 
         var result = _binder.ModelBind(template, route);
 
-        Assert.Equal("", result.GetValueByName<string>("name"));
+        Assert.Equal("", result.GetValueByNameWithType("name", typeof(string)));
     }
 
     [Fact]
@@ -186,7 +186,7 @@ public sealed class ModelBinderTests
 
         var result = _binder.ModelBind(template, route);
 
-        Assert.Equal("hello-world_123", result.GetValueByName<string>("text"));
+        Assert.Equal("hello-world_123", result.GetValueByNameWithType("text", typeof(string)));
     }
 
     #endregion
@@ -201,7 +201,7 @@ public sealed class ModelBinderTests
 
         var result = _binder.ModelBind(template, route);
 
-        Assert.Equal(int.MinValue, result.GetValueByName<int>("value"));
+        Assert.Equal(int.MinValue, result.GetValueByNameWithType("value", typeof(int)));
     }
 
     [Fact]
@@ -212,7 +212,7 @@ public sealed class ModelBinderTests
 
         var result = _binder.ModelBind(template, route);
 
-        Assert.Equal(int.MaxValue, result.GetValueByName<int>("value"));
+        Assert.Equal(int.MaxValue, result.GetValueByNameWithType("value", typeof(int)));
     }
 
     [Fact]
@@ -223,7 +223,7 @@ public sealed class ModelBinderTests
 
         var result = _binder.ModelBind(template, route);
 
-        Assert.Equal(0, result.GetValueByName<int>("value"));
+        Assert.Equal(0, result.GetValueByNameWithType("value", typeof(int)));
     }
 
     [Fact]
@@ -234,7 +234,7 @@ public sealed class ModelBinderTests
 
         var result = _binder.ModelBind(template, route);
 
-        Assert.Equal(-123, result.GetValueByName<int>("value"));
+        Assert.Equal(-123, result.GetValueByNameWithType("value", typeof(int)));
     }
 
     [Fact]
@@ -245,7 +245,7 @@ public sealed class ModelBinderTests
 
         var result = _binder.ModelBind(template, route);
 
-        Assert.Equal(0.0f, result.GetValueByName<float>("value"));
+        Assert.Equal(0.0f, result.GetValueByNameWithType("value", typeof(float)));
     }
 
     [Fact]
@@ -256,7 +256,7 @@ public sealed class ModelBinderTests
 
         var result = _binder.ModelBind(template, route);
 
-        Assert.Equal(-3.14f, result.GetValueByName<float>("value"), precision: 2);
+        Assert.Equal(-3.14f, (float)result.GetValueByNameWithType("value", typeof(float)), precision: 2);
     }
 
     [Fact]
@@ -267,7 +267,7 @@ public sealed class ModelBinderTests
 
         var result = _binder.ModelBind(template, route);
 
-        Assert.Equal(0.00001f, result.GetValueByName<float>("value"), precision: 5);
+        Assert.Equal(0.00001f, (float)result.GetValueByNameWithType("value", typeof(float)), precision: 5);
     }
 
     [Fact]
@@ -279,7 +279,7 @@ public sealed class ModelBinderTests
 
         var result = _binder.ModelBind(template, route);
 
-        Assert.Equal(expectedGuid, result.GetValueByName<Guid>("id"));
+        Assert.Equal(expectedGuid, result.GetValueByNameWithType("id", typeof(Guid)));
     }
 
     [Fact]
@@ -291,7 +291,7 @@ public sealed class ModelBinderTests
 
         var result = _binder.ModelBind(template, route);
 
-        Assert.Equal(expectedDate, result.GetValueByName<DateTime>("when"));
+        Assert.Equal(expectedDate, result.GetValueByNameWithType("when", typeof(DateTime)));
     }
 
     [Fact]
@@ -302,7 +302,7 @@ public sealed class ModelBinderTests
 
         var result = _binder.ModelBind(template, route);
 
-        var parsedDate = result.GetValueByName<DateTime>("when");
+        var parsedDate = (DateTime)result.GetValueByNameWithType("when", typeof(DateTime));
         Assert.Equal(2026, parsedDate.Year);
         Assert.Equal(10, parsedDate.Month);
         Assert.Equal(30, parsedDate.Day);
@@ -373,7 +373,7 @@ public sealed class ModelBinderTests
 
         var result = _binder.ModelBind(template, route);
 
-        Assert.Equal(42, result.GetValueByName<int>("id"));
+        Assert.Equal(42, result.GetValueByNameWithType("id", typeof(int)));
     }
 
     [Fact]
@@ -384,7 +384,7 @@ public sealed class ModelBinderTests
 
         var result = _binder.ModelBind(template, route);
 
-        Assert.Throws<InvalidOperationException>(() => result.GetValueByName<string>("id"));
+        Assert.Throws<InvalidOperationException>(() => result.GetValueByNameWithType("id", typeof(string)));
     }
 
     [Fact]
@@ -395,7 +395,7 @@ public sealed class ModelBinderTests
 
         var result = _binder.ModelBind(template, route);
 
-        Assert.Throws<KeyNotFoundException>(() => result.GetValueByName<int>("nonexistent"));
+        Assert.Throws<KeyNotFoundException>(() => result.GetValueByNameWithType("nonexistent", typeof(int)));
     }
 
     [Fact]
@@ -406,7 +406,7 @@ public sealed class ModelBinderTests
 
         var result = _binder.ModelBind(template, route);
 
-        Assert.Throws<KeyNotFoundException>(() => result.GetValueByName<int>("userid"));
+        Assert.Throws<KeyNotFoundException>(() => result.GetValueByNameWithType("userid", typeof(int)));
     }
 
     #endregion

@@ -7,24 +7,24 @@ namespace Router.DTOs.ModelBinding;
 
 public class ModelBindResult
 {
-    private readonly FrozenDictionary<string, IModelBindObject> valuesByName;
+    private readonly FrozenDictionary<string, ModelBindObject> valuesByName;
 
     public ModelBindResult(
-        IEnumerable<IModelBindObject> variables)
+        IEnumerable<ModelBindObject> variables)
     {
         valuesByName = variables.ToFrozenDictionary(
             variable => variable.Name);
     }
-
-    public T GetValueByName<T>(string name)
+    public object GetValueByNameWithType(string name, Type type)
     {
         if (!valuesByName.TryGetValue(name, out var value))
             throw new KeyNotFoundException(name);
 
-        if (value is not ModelBindObject<T> typedValue)
+        if (value.Type != type)
             throw new InvalidOperationException(
-                $"Expected {typeof(T)}, got {value.Type}");
+                $"Expected {type}, got {value.Type}");
 
-        return typedValue.Value;
+        return value.Value;
     }
+
 }
