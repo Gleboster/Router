@@ -1,52 +1,80 @@
 ﻿using Interfaces;
+using Router.Components.Binding;
+using Router.Components.Compilers;
+using Router.Components.Execution;
+using Router.Components.Parsers;
+using Router.Components.Registry;
+using Router.Components.Validation;
+using Router.Models.Registrations;
 
 namespace Router.Implementations;
 
 public class Router : IRouter
 {
+    private readonly TemplateParser templateParser;
+    private readonly HandlerMetadataParser handlerMetadataParser;
+
+    private readonly RouteParser routeParser;
+
+
+    private readonly ValidatorRouteRegistration validatorRouteRegistration;
+
+    private readonly RouteRegistry routeRegistry;
+
+    private readonly ModelBinder modelBinder;
+
+    private readonly HandlerRunner handlerRunner;
+
+    public Router(TemplateParser templateParser, HandlerMetadataParser handlerMetadataParser, RouteParser routeParser, ValidatorRouteRegistration validatorRouteRegistration, RouteRegistry routeRegistry, ModelBinder modelBinder, HandlerRunner handlerRunner)
+    {
+        this.templateParser = templateParser;
+        this.handlerMetadataParser = handlerMetadataParser;
+        this.routeParser = routeParser;
+        this.validatorRouteRegistration = validatorRouteRegistration;
+        this.routeRegistry = routeRegistry;
+        this.modelBinder = modelBinder;
+        this.handlerRunner = handlerRunner;
+    }
+
+
     public void RegisterRoute(string template, Action action)
     {
-        throw new NotImplementedException();
-
-        //Спарсить
-
-        //Проверить соответсвие Handler - Template
-
-        //Сохранить
+        RegistrationRoute(template, action);
     }
 
     public void RegisterRoute<T1>(string template, Action<T1> action)
     {
-        throw new NotImplementedException();
-
-        //Спарсить
-
-        //Проверить соответсвие Handler - Template
-
-        //Сохранить
+        RegistrationRoute(template, action);
     }
 
     public void RegisterRoute<T1, T2>(string template, Action<T1, T2> action)
     {
-        throw new NotImplementedException();
-
-        //Спарсить
-
-        //Проверить соответсвие Handler - Template
-
-        //Сохранить
+        RegistrationRoute(template, action);
     }
 
     public void Route(string route)
     {
-        throw new NotImplementedException();
+        var routeObj = routeParser.Parse(route);
 
-        //Распарсить - Сегментировать маршрут
+        var routeRegistartion = routeRegistry.ResolveRoute(routeObj);
 
-        //Получить запись RouteRegistration (template + HandlerMetadata)
+        var templateObj = routeRegistartion.Template;
+        var handlerObj = routeRegistartion.Handler;
 
-        //Model Bind - получить dict<name, value> из маршрута по соответсвующему шаблону
+        var modelBindResult = modelBinder.ModelBind(templateObj, routeObj);
 
-        //HabdlerRunner - запустить Action HandlerMetadata на выполнения с подстановкой значений из результата Binding
+        handlerRunner.RunHandle(handlerObj, modelBindResult);
+    }
+
+    private void RegistrationRoute(string template, Delegate action)
+    {
+        var templateObj = templateParser.Parse(template);
+        var handlerObj = handlerMetadataParser.Parse(action);
+
+        var routeRegistartion = new RouteRegistration(templateObj, handlerObj);
+
+        validatorRouteRegistration.ValidateParity(routeRegistartion);
+
+        routeRegistry.Save(routeRegistartion);
     }
 }
