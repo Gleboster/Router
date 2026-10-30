@@ -21,7 +21,7 @@ public static class SegmentsUtils
             StaticTemplateSegment staticSegment =>
                 string.Equals(staticSegment.Value, routeSegment.Value, StringComparison.OrdinalIgnoreCase),
             DynamicTemplateSegment dynamicSegment => 
-                routeSegment.TryParseValue(dynamicSegment.RouteVariable.Type),
+                routeSegment.TryParseValue(dynamicSegment.RouteVariable.Type, out _),
             _ => false
         };
     }
@@ -41,35 +41,56 @@ public static class SegmentsUtils
         };
     }
 
-    private static bool TryParseValue(
-        this RouteSegment routeSegment, 
-        Type type)
+    public static bool TryParseValue(
+        this RouteSegment routeSegment,
+        Type type,
+        out object result)
     {
-        if (routeSegment?.Value is null)
+        result = default!;
+        var value = routeSegment?.Value;
+        if (value is null)
             return false;
 
-        var value = routeSegment.Value;
+        object? parsedValue;
 
         if (type == typeof(string))
-            return true; 
+            parsedValue = value;
 
-        if (type == typeof(int))
-            return int.TryParse(value, NumberStyles.Integer, cultureInfo, out _);
+        else if (type == typeof(int))
+        {
+            if (!int.TryParse(value, NumberStyles.Integer, cultureInfo, out var parsed))
+                return false;
 
-        if (type == typeof(Guid))
-            return Guid.TryParse(value, out _);
+            parsedValue = parsed;
+        }
+        else if (type == typeof(Guid))
+        {
+            if (!Guid.TryParse(value, out var parsed))
+                return false;
 
-        if (type == typeof(float))
-            return float.TryParse(value, NumberStyles.Float, cultureInfo, out _);
+            parsedValue = parsed;
+        }
+        else if (type == typeof(float))
+        {
+            if (!float.TryParse(value, NumberStyles.Float, cultureInfo, out var parsed))
+                return false;
 
-        if (type == typeof(DateTime))
-            return DateTime.TryParse(
-                value,
-                cultureInfo,
-                dateTimeStyle,
-                out _);
+            parsedValue = parsed;
+        }
+        else if (type == typeof(DateTime))
+        {
+            if (!DateTime.TryParse(value, cultureInfo, dateTimeStyle, out var parsed))
+                return false;
 
-        return false;
+            parsedValue = parsed;
+        }
+        else
+            return false;
+
+        if (!type.IsInstanceOfType(parsedValue))
+            return false;
+
+        result = parsedValue;
+        return true;
     }
-
 }
