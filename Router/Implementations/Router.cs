@@ -67,7 +67,7 @@ public class Router : IRouter
         handlerRunner.RunHandle(handlerObj, modelBindResult);
     }
 
-    public async Task RouteAsync(string route)
+    public async Task RouteAsync(string route, CancellationToken cancellationToken)
     {
         var routeObj = routeParser.Parse(route);
 
@@ -78,7 +78,7 @@ public class Router : IRouter
 
         var modelBindResult = modelBinder.ModelBind(templateObj, routeObj);
 
-        await handlerRunner.RunHandleAsync(handlerObj, modelBindResult);
+        await handlerRunner.RunHandleAsync(handlerObj, modelBindResult, cancellationToken);
     }
 
     private void RegistrationRoute(string template, Delegate action)

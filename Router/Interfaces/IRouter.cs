@@ -31,4 +31,10 @@ public interface IRouter
     /// </summary>
     /// <param name="route">маршрут</param>
     void Route(string route);
+
+    /// <summary>
+    /// вызывает асинхронно обработчик соответствующий маршруту
+    /// </summary>
+    /// <param name="route">маршрут</param>
+    Task RouteAsync(string route, CancellationToken cancellationToken);
 }

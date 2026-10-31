@@ -12,11 +12,15 @@ public class HandlerRunner
         handlerMetadata.Action.DynamicInvoke(args);
     }
 
-    public async Task RunHandleAsync(HandlerMetadata handlerMetadata, ModelBindResult modelBindResult)
+    public async Task RunHandleAsync(
+        HandlerMetadata handlerMetadata, 
+        ModelBindResult modelBindResult,
+        CancellationToken cancellationToken
+        )
     {
         var args = GetArgs(handlerMetadata, modelBindResult);
 
-        await Task.Run(() => handlerMetadata.Action.DynamicInvoke(args));
+        await Task.Run(() => handlerMetadata.Action.DynamicInvoke(args), cancellationToken);
     }
 
     private object[] GetArgs(HandlerMetadata handlerMetadata, ModelBindResult modelBindResult)
