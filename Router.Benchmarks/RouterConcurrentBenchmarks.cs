@@ -14,10 +14,7 @@ public class RouterConcurrentBenchmarks
     private int _oldMinWorker;
     private int _oldMinIo;
 
-    [Params(
-        //1, 2, 4, 
-        8, 16
-        )]
+    [Params(1, 2, 4, 8, 16)]
     public int ConcurrentThreads { get; set; }
 
     [GlobalSetup]
@@ -56,48 +53,48 @@ public class RouterConcurrentBenchmarks
         switch (routeType)
         {
             case 0:
-            _router.RegisterRoute<int>($"/api/users/{{id:int}}/", (id) => { });
-            _routes.Add($"/api/users/{1000 + index}/");
+            _router.RegisterRoute<int>($"/api/users{index}/{{id:int}}/", (id) => { });
+            _routes.Add($"/api/users{index}/{1000 + index}/");
             break;
 
             case 1:
-            _router.RegisterRoute<int>($"/api/products/{{id:int}}/details/", (id) => { });
-            _routes.Add($"/api/products/{1000 + index}/details/");
+            _router.RegisterRoute<int>($"/api/products{index}/{{id:int}}/details/", (id) => { });
+            _routes.Add($"/api/products{index}/{1000 + index}/details/");
             break;
 
             case 2:
-            _router.RegisterRoute<Guid>($"/api/orders/{{orderId:guid}}/", (orderId) => { });
-            _routes.Add($"/api/orders/{staticGuid}/");
+            _router.RegisterRoute<Guid>($"/api/orders{index}/{{orderId:guid}}/", (orderId) => { });
+            _routes.Add($"/api/orders{index}/{staticGuid}/");
             break;
 
             case 3:
-            _router.RegisterRoute<string>($"/api/categories/{{name:string}}/", (name) => { });
-            _routes.Add($"/api/categories/category{index}/");
+            _router.RegisterRoute<string>($"/api/categories{index}/{{name:string}}/", (name) => { });
+            _routes.Add($"/api/categories{index}/category{index}/");
             break;
 
             case 4:
-            _router.RegisterRoute<int, string>($"/api/items/{{id:int}}/price/{{currency:string}}/", (id, currency) => { });
-            _routes.Add($"/api/items/{1000 + index}/price/USD/");
+            _router.RegisterRoute<int, string>($"/api/items{index}/{{id:int}}/price/{{currency:string}}/", (id, currency) => { });
+            _routes.Add($"/api/items{index}/{1000 + index}/price/USD/");
             break;
 
             case 5:
-            _router.RegisterRoute($"/api/static/route{index}/", () => { });
-            _routes.Add($"/api/static/route{index}/");
+            _router.RegisterRoute($"/api/static{index}/route{index}/", () => { });
+            _routes.Add($"/api/static{index}/route{index}/");
             break;
 
             case 6:
-            _router.RegisterRoute($"/api/v{index}/resource/", () => { });
-            _routes.Add($"/api/v{index}/resource/");
+            _router.RegisterRoute($"/api/v{index}/resource{index}/", () => { });
+            _routes.Add($"/api/v{index}/resource{index}/");
             break;
 
             case 7:
-            _router.RegisterRoute<DateTime>($"/api/data/{{timestamp:datetime}}/", (timestamp) => { });
-            _routes.Add($"/api/data/{staticDateTime:yyyy-MM-ddTHH:mm:ss}/");
+            _router.RegisterRoute<DateTime>($"/api/data{index}/{{timestamp:datetime}}/", (timestamp) => { });
+            _routes.Add($"/api/data{index}/{staticDateTime:yyyy-MM-ddTHH:mm:ss}/");
             break;
 
             case 8:
-            _router.RegisterRoute<float>($"/api/values/{{value:float}}/", (value) => { });
-            _routes.Add($"/api/values/{123.45 + index}/");
+            _router.RegisterRoute<float>($"/api/values{index}/{{value:float}}/", (value) => { });
+            _routes.Add($"/api/values{index}/{(123.45f + index).ToString(System.Globalization.CultureInfo.InvariantCulture)}/");
             break;
 
             case 9:
@@ -119,7 +116,7 @@ public class RouterConcurrentBenchmarks
     }
 
     /// <summary>
-    /// Random на каждого отправителя
+    /// Random РЅР° РєР°Р¶РґРѕРіРѕ РѕС‚РїСЂР°РІРёС‚РµР»СЏ
     /// </summary>
     /// <returns></returns>
     [Benchmark]
@@ -133,7 +130,7 @@ public class RouterConcurrentBenchmarks
     }
 
     /// <summary>
-    /// Все отправители дёргают один и тот же (средний) маршрут.
+    /// Р’СЃРµ РѕС‚РїСЂР°РІРёС‚РµР»Рё РґС‘СЂРіР°СЋС‚ РѕРґРёРЅ Рё С‚РѕС‚ Р¶Рµ (СЃСЂРµРґРЅРёР№) РјР°СЂС€СЂСѓС‚.
     /// </summary>
     /// <returns></returns>
     [Benchmark]
@@ -144,8 +141,8 @@ public class RouterConcurrentBenchmarks
     }
 
     /// <summary>
-    /// Каждый отправитель идёт по своему диапазону маршрутов:
-    /// i-й отправитель берёт routeIndex = i % 100.
+    /// РљР°Р¶РґС‹Р№ РѕС‚РїСЂР°РІРёС‚РµР»СЊ РёРґС‘С‚ РїРѕ СЃРІРѕРµРјСѓ РґРёР°РїР°Р·РѕРЅСѓ РјР°СЂС€СЂСѓС‚РѕРІ:
+    /// i-Р№ РѕС‚РїСЂР°РІРёС‚РµР»СЊ Р±РµСЂС‘С‚ routeIndex = i % 100.
     /// </summary>
     /// <returns></returns>
     [Benchmark]
@@ -155,7 +152,7 @@ public class RouterConcurrentBenchmarks
     }
 
     /// <summary>
-    /// Все отправители дёргают последний маршрут — худший случай обхода trie.
+    /// Р’СЃРµ РѕС‚РїСЂР°РІРёС‚РµР»Рё РґС‘СЂРіР°СЋС‚ РїРѕСЃР»РµРґРЅРёР№ РјР°СЂС€СЂСѓС‚ вЂ” С…СѓРґС€РёР№ СЃР»СѓС‡Р°Р№ РѕР±С…РѕРґР° trie.
     /// </summary>
     /// <returns></returns>
     [Benchmark]
