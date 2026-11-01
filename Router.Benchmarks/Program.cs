@@ -1,3 +1,6 @@
 ﻿using BenchmarkDotNet.Running;
+using BenchmarkDotNet.Configs;
 
-BenchmarkRunner.Run<Router.Benchmarks.RouterBenchmarks>();
+var config = DefaultConfig.Instance;
+
+BenchmarkRunner.Run<Router.Benchmarks.RouterConcurrentBenchmarks>(config);
