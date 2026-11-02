@@ -42,20 +42,15 @@ internal class TemplateParser
         {
             var match = SegmentRegex.Match(part);
 
-            if (match.Success)
+            if (match.Success &&
+                match.Length == part.Length)
             {
                 var name = match.Groups["name"].Value;
                 var typeStr = match.Groups["type"].Value;
-               
-                if (variableNames.Contains(name))
-                    throw new InvalidTemplateFormatException(
-                        $"Duplicate parameter name '{name}' found in template",
-                        template);
 
-                if (!TypeMap.TryGetValue(typeStr, out var type))
-                    throw new InvalidTemplateFormatException(
-                        $"Unknown type '{typeStr}' in parameter '{name}'",
-                        template);
+                EnsureUniqueVariableName(template, variableNames, name);
+
+                Type type = GetSupportedType(template, name, typeStr);
 
                 variableNames.Add(name);
                 var variable = new RouteVariable(name, type);
@@ -64,15 +59,46 @@ internal class TemplateParser
             }
             else
             {
-                if (part.Contains('{') || part.Contains('}'))
-                    throw new InvalidTemplateFormatException(
-                        $"Invalid parameter format in segment '{part}'. Expected format: {{name:type}}",
-                        template);
+                EnsureValidStaticSegment(template, part);
 
                 segments.Add(new StaticTemplateSegment(part));
             }
         }
 
         return (segments, variables);
+    }
+
+    private static void EnsureValidStaticSegment(string template, string part)
+    {
+        if (part.Contains('{') ||
+            part.Contains('}') ||
+            part.Contains(':'))
+            throw new InvalidTemplateFormatException(
+                $"Invalid parameter format in segment '{part}'. Expected format: {{name:type}}",
+                template);
+
+        if (string.IsNullOrEmpty(part) ||
+            !part.All(c => char.IsAsciiLetter(c) || char.IsAsciiDigit(c)))
+            throw new InvalidTemplateFormatException(
+                $"Invalid static segment '{part}'. Only Latin letters and digits are allowed.",
+                template);
+    }
+
+    private static Type GetSupportedType(string template, string name, string typeStr)
+    {
+        if (!TypeMap.TryGetValue(typeStr, out var type))
+            throw new InvalidTemplateFormatException(
+                $"Unknown type '{typeStr}' in parameter '{name}'",
+                template);
+        
+        return type;
+    }
+
+    private static void EnsureUniqueVariableName(string template, HashSet<string> variableNames, string name)
+    {
+        if (variableNames.Contains(name))
+            throw new InvalidTemplateFormatException(
+                $"Duplicate parameter name '{name}' found in template",
+                template);
     }
 }
