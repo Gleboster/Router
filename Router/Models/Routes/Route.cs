@@ -12,4 +12,9 @@ internal class Route
     {
         this.segments = segments.ToList().AsReadOnly();
     }
+
+    public override string ToString()
+    {
+       return  string.Join("/", Segments.Select(s => s.Value));
+    }
 }

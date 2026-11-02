@@ -1,4 +1,5 @@
 ﻿using Router.Components.Registry.Trie;
+using Router.Exceptions;
 using Router.Models.Registrations;
 using Router.Models.Routes;
 
@@ -20,6 +21,13 @@ internal class RouteRegistry
 
     public RouteRegistration ResolveRoute(Route route)
     {
-        return routeTrie.ResolveRoute(route);
+        var result = routeTrie.ResolveRoute(route);
+
+        if (result == null)
+        {
+            throw new RouteNotFoundException(route);
+        }
+
+        return result;
     }
 }
