@@ -22,6 +22,9 @@ internal class TemplateParser
 
     public Template Parse(string template)
     {
+        if (string.IsNullOrWhiteSpace(template))
+            throw new ArgumentException("Template cannot be null or empty", nameof(template));
+
         var (segments, variables) = SegmentTemplate(template);
         return new Template(segments, variables);
     }
