@@ -6,11 +6,11 @@ namespace Router.Utils;
 
 public static class SegmentsUtils
 {
-    private static StringComparison stringComparison = StringComparison.OrdinalIgnoreCase;
+    private readonly static StringComparison stringComparison = StringComparison.OrdinalIgnoreCase;
     
-    private static CultureInfo cultureInfo = CultureInfo.InvariantCulture;
+    private readonly static CultureInfo cultureInfo = CultureInfo.InvariantCulture;
 
-    private static DateTimeStyles dateTimeStyle = DateTimeStyles.RoundtripKind;
+    private readonly static DateTimeStyles dateTimeStyle = DateTimeStyles.RoundtripKind;
 
     public static bool MatchTemplateSegment(
         this RouteSegment routeSegment,
