@@ -24,9 +24,7 @@ internal class RouteRegistry
         var result = routeTrie.ResolveRoute(route);
 
         if (result == null)
-        {
             throw new RouteNotFoundException(route);
-        }
 
         return result;
     }

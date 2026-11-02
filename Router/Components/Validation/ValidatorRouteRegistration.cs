@@ -29,12 +29,10 @@ internal class ValidatorRouteRegistration
                 var templateVariable = template.GetVariableByName(handlerVariable.Name);
 
                 if (templateVariable.Type != handlerVariable.Type)
-                {
                     throw new RouteRegistrationMismatchException(
                         $"Type mismatch for parameter '{handlerVariable.Name}': " +
                         $"template expects {templateVariable.Type.Name}, " +
                         $"handler has {handlerVariable.Type.Name}");
-                }
             }
             catch (KeyNotFoundException)
             {
