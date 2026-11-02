@@ -47,6 +47,7 @@ public static class SegmentsUtils
         out object result)
     {
         result = default!;
+
         var value = routeSegment?.Value;
         if (value is null)
             return false;
