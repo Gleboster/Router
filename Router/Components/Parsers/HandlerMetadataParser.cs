@@ -19,10 +19,7 @@ internal class HandlerMetadataParser
         {
             var parameter = parameters[i];
 
-            if (string.IsNullOrWhiteSpace(parameter.Name) ||
-                parameter.Name == "_")
-                throw new InvalidHandlerSignatureException(
-                    $"Handler parameter at position {i} has no valid name");
+            EnsureValidNameParameter(i, parameter);
 
             variables.Add(new RouteVariable(
                 Name: parameter.Name,
@@ -34,5 +31,13 @@ internal class HandlerMetadataParser
             action,
             variables
         );
+    }
+
+    private static void EnsureValidNameParameter(int i, System.Reflection.ParameterInfo parameter)
+    {
+        if (string.IsNullOrWhiteSpace(parameter.Name) ||
+            parameter.Name == "_")
+            throw new InvalidHandlerSignatureException(
+                $"Handler parameter at position {i} has no valid name");
     }
 }
