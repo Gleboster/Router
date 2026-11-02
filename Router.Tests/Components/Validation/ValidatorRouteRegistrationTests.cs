@@ -1,5 +1,6 @@
 using Router.Components.Compilers;
 using Router.Components.Validation;
+using Router.Exceptions;
 using Router.Models.Registrations;
 using Xunit;
 
@@ -54,7 +55,7 @@ public class ValidatorRouteRegistrationTests
     }
 
     [Fact]
-    public void ValidateParity_ParameterCountMismatch_ThrowsInvalidOperationException()
+    public void ValidateParity_ParameterCountMismatch_ThrowsRouteRegistrationMismatchException()
     {
         var template = _templateParser.Parse("/users/{id:int}");
         Action<int, string> handler = (int id, string name) => { };
@@ -62,7 +63,7 @@ public class ValidatorRouteRegistrationTests
 
         var registration = new RouteRegistration(template, handlerMetadata);
 
-        var exception = Assert.Throws<InvalidOperationException>(
+        var exception = Assert.Throws<RouteRegistrationMismatchException>(
             () => _validator.ValidateParity(registration));
 
         Assert.Contains("Parameter count mismatch", exception.Message);
@@ -71,7 +72,7 @@ public class ValidatorRouteRegistrationTests
     }
 
     [Fact]
-    public void ValidateParity_TemplateHasMoreParameters_ThrowsInvalidOperationException()
+    public void ValidateParity_TemplateHasMoreParameters_ThrowsRouteRegistrationMismatchException()
     {
         var template = _templateParser.Parse("/users/{id:int}/posts/{postId:int}");
         Action<int> handler = (int id) => { };
@@ -79,7 +80,7 @@ public class ValidatorRouteRegistrationTests
 
         var registration = new RouteRegistration(template, handlerMetadata);
 
-        var exception = Assert.Throws<InvalidOperationException>(
+        var exception = Assert.Throws<RouteRegistrationMismatchException>(
             () => _validator.ValidateParity(registration));
 
         Assert.Contains("Parameter count mismatch", exception.Message);
@@ -88,7 +89,7 @@ public class ValidatorRouteRegistrationTests
     }
 
     [Fact]
-    public void ValidateParity_HandlerHasMoreParameters_ThrowsInvalidOperationException()
+    public void ValidateParity_HandlerHasMoreParameters_ThrowsRouteRegistrationMismatchException()
     {
         var template = _templateParser.Parse("/users/{id:int}");
         Action<int, string, Guid> handler = (int id, string name, Guid guid) => { };
@@ -96,7 +97,7 @@ public class ValidatorRouteRegistrationTests
 
         var registration = new RouteRegistration(template, handlerMetadata);
 
-        var exception = Assert.Throws<InvalidOperationException>(
+        var exception = Assert.Throws<RouteRegistrationMismatchException>(
             () => _validator.ValidateParity(registration));
 
         Assert.Contains("Parameter count mismatch", exception.Message);
@@ -105,7 +106,7 @@ public class ValidatorRouteRegistrationTests
     }
 
     [Fact]
-    public void ValidateParity_TypeMismatch_ThrowsInvalidOperationException()
+    public void ValidateParity_TypeMismatch_ThrowsRouteRegistrationMismatchException()
     {
         var template = _templateParser.Parse("/users/{id:int}");
         Action<string> handler = (string id) => { };
@@ -113,7 +114,7 @@ public class ValidatorRouteRegistrationTests
 
         var registration = new RouteRegistration(template, handlerMetadata);
 
-        var exception = Assert.Throws<InvalidOperationException>(
+        var exception = Assert.Throws<RouteRegistrationMismatchException>(
             () => _validator.ValidateParity(registration));
 
         Assert.Contains("Type mismatch for parameter 'id'", exception.Message);
@@ -122,7 +123,7 @@ public class ValidatorRouteRegistrationTests
     }
 
     [Fact]
-    public void ValidateParity_MultipleParametersWithTypeMismatch_ThrowsInvalidOperationException()
+    public void ValidateParity_MultipleParametersWithTypeMismatch_ThrowsRouteRegistrationMismatchException()
     {
         var template = _templateParser.Parse("/users/{userId:int}/posts/{postId:guid}");
         Action<int, int> handler = (int userId, int postId) => { };
@@ -130,7 +131,7 @@ public class ValidatorRouteRegistrationTests
 
         var registration = new RouteRegistration(template, handlerMetadata);
 
-        var exception = Assert.Throws<InvalidOperationException>(
+        var exception = Assert.Throws<RouteRegistrationMismatchException>(
             () => _validator.ValidateParity(registration));
 
         Assert.Contains("Type mismatch for parameter 'postId'", exception.Message);
@@ -139,7 +140,7 @@ public class ValidatorRouteRegistrationTests
     }
 
     [Fact]
-    public void ValidateParity_ParameterNameMismatch_ThrowsInvalidOperationException()
+    public void ValidateParity_ParameterNameMismatch_ThrowsRouteRegistrationMismatchException()
     {
         var template = _templateParser.Parse("/users/{id:int}");
         Action<int> handler = (int userId) => { };
@@ -147,7 +148,7 @@ public class ValidatorRouteRegistrationTests
 
         var registration = new RouteRegistration(template, handlerMetadata);
 
-        var exception = Assert.Throws<InvalidOperationException>(
+        var exception = Assert.Throws<RouteRegistrationMismatchException>(
             () => _validator.ValidateParity(registration));
 
         Assert.Contains("Parameter 'userId' found in handler but not in template", exception.Message);
@@ -197,7 +198,7 @@ public class ValidatorRouteRegistrationTests
     }
 
     [Fact]
-    public void ValidateParity_GuidTypeMismatch_ThrowsInvalidOperationException()
+    public void ValidateParity_GuidTypeMismatch_ThrowsRouteRegistrationMismatchException()
     {
         var template = _templateParser.Parse("/users/{id:guid}");
         Action<string> handler = (string id) => { };
@@ -205,7 +206,7 @@ public class ValidatorRouteRegistrationTests
 
         var registration = new RouteRegistration(template, handlerMetadata);
 
-        var exception = Assert.Throws<InvalidOperationException>(
+        var exception = Assert.Throws<RouteRegistrationMismatchException>(
             () => _validator.ValidateParity(registration));
 
         Assert.Contains("Type mismatch for parameter 'id'", exception.Message);
@@ -214,7 +215,7 @@ public class ValidatorRouteRegistrationTests
     }
 
     [Fact]
-    public void ValidateParity_FloatTypeMismatch_ThrowsInvalidOperationException()
+    public void ValidateParity_FloatTypeMismatch_ThrowsRouteRegistrationMismatchException()
     {
         var template = _templateParser.Parse("/items/{price:float}");
         Action<int> handler = (int price) => { };
@@ -222,7 +223,7 @@ public class ValidatorRouteRegistrationTests
 
         var registration = new RouteRegistration(template, handlerMetadata);
 
-        var exception = Assert.Throws<InvalidOperationException>(
+        var exception = Assert.Throws<RouteRegistrationMismatchException>(
             () => _validator.ValidateParity(registration));
 
         Assert.Contains("Type mismatch for parameter 'price'", exception.Message);
@@ -231,7 +232,7 @@ public class ValidatorRouteRegistrationTests
     }
 
     [Fact]
-    public void ValidateParity_DateTimeTypeMismatch_ThrowsInvalidOperationException()
+    public void ValidateParity_DateTimeTypeMismatch_ThrowsRouteRegistrationMismatchException()
     {
         var template = _templateParser.Parse("/events/{date:datetime}");
         Action<string> handler = (string date) => { };
@@ -239,7 +240,7 @@ public class ValidatorRouteRegistrationTests
 
         var registration = new RouteRegistration(template, handlerMetadata);
 
-        var exception = Assert.Throws<InvalidOperationException>(
+        var exception = Assert.Throws<RouteRegistrationMismatchException>(
             () => _validator.ValidateParity(registration));
 
         Assert.Contains("Type mismatch for parameter 'date'", exception.Message);
@@ -279,7 +280,7 @@ public class ValidatorRouteRegistrationTests
     }
 
     [Fact]
-    public void ValidateParity_MultipleParametersWithOneNameMismatch_ThrowsInvalidOperationException()
+    public void ValidateParity_MultipleParametersWithOneNameMismatch_ThrowsRouteRegistrationMismatchException()
     {
         var template = _templateParser.Parse("/users/{id:int}/posts/{postId:int}");
         Action<int, int> handler = (int id, int differentPostId) => { };
@@ -287,14 +288,14 @@ public class ValidatorRouteRegistrationTests
 
         var registration = new RouteRegistration(template, handlerMetadata);
 
-        var exception = Assert.Throws<InvalidOperationException>(
+        var exception = Assert.Throws<RouteRegistrationMismatchException>(
             () => _validator.ValidateParity(registration));
 
         Assert.Contains("Parameter 'differentPostId' found in handler but not in template", exception.Message);
     }
 
     [Fact]
-    public void ValidateParity_CaseSensitiveParameterNames_ThrowsInvalidOperationException()
+    public void ValidateParity_CaseSensitiveParameterNames_ThrowsRouteRegistrationMismatchException()
     {
         var template = _templateParser.Parse("/users/{id:int}");
         Action<int> handler = (int Id) => { };
@@ -302,7 +303,7 @@ public class ValidatorRouteRegistrationTests
 
         var registration = new RouteRegistration(template, handlerMetadata);
 
-        var exception = Assert.Throws<InvalidOperationException>(
+        var exception = Assert.Throws<RouteRegistrationMismatchException>(
             () => _validator.ValidateParity(registration));
 
         Assert.Contains("Parameter 'Id' found in handler but not in template", exception.Message);

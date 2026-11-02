@@ -1,4 +1,5 @@
-﻿using Router.Models.Handlers;
+﻿using Router.Exceptions;
+using Router.Models.Handlers;
 using Router.Models.Registrations;
 using Router.Models.Templates;
 
@@ -29,7 +30,7 @@ internal class ValidatorRouteRegistration
 
                 if (templateVariable.Type != handlerVariable.Type)
                 {
-                    throw new InvalidOperationException(
+                    throw new RouteRegistrationMismatchException(
                         $"Type mismatch for parameter '{handlerVariable.Name}': " +
                         $"template expects {templateVariable.Type.Name}, " +
                         $"handler has {handlerVariable.Type.Name}");
@@ -37,7 +38,7 @@ internal class ValidatorRouteRegistration
             }
             catch (KeyNotFoundException)
             {
-                throw new InvalidOperationException(
+                throw new RouteRegistrationMismatchException(
                     $"Parameter '{handlerVariable.Name}' found in handler but not in template");
             }
         }
@@ -49,7 +50,7 @@ internal class ValidatorRouteRegistration
     {
         if (template.CountVariables != handler.CountParameters)
         {
-            throw new InvalidOperationException(
+            throw new RouteRegistrationMismatchException(
                 $"Parameter count mismatch: template has {template.CountVariables} parameters, " +
                 $"handler has {handler.CountParameters} parameters");
         }
