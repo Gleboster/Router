@@ -1,4 +1,5 @@
 using Router.Components.Compilers;
+using Router.Exceptions;
 using Router.Models.Segments;
 using Router.Models.Variables;
 using Xunit;
@@ -113,20 +114,66 @@ public class TemplateParserTests
     [InlineData("")]
     [InlineData(" ")]
     [InlineData(null)]
-    public void Parse_EmptyTemplate_ThrowsArgumentException(string template)
+    public void Parse_NullOrEmptyTemplate_ThrowsArgumentException(string template)
     {
         var exception = Assert.Throws<ArgumentException>(() => _parser.Parse(template));
         Assert.Equal("template", exception.ParamName);
+        Assert.Contains("cannot be null or empty", exception.Message);
     }
 
     [Fact]
-    public void Parse_UnknownType_ThrowsArgumentException()
+    public void Parse_UnknownType_ThrowsInvalidTemplateFormatException()
     {
-        var exception = Assert.Throws<ArgumentException>(() =>
+        var exception = Assert.Throws<InvalidTemplateFormatException>(() =>
             _parser.Parse("/route/{param:unknown}"));
 
         Assert.Contains("unknown", exception.Message);
         Assert.Contains("param", exception.Message);
+        Assert.Equal("template", exception.ParamName);
+    }
+
+    [Theory]
+    [InlineData("/route/{unclosed")]
+    [InlineData("/route/unclosed}")]
+    [InlineData("/route/{{nested:int}}")]
+    public void Parse_UnclosedBraces_ThrowsInvalidTemplateFormatException(string template)
+    {
+        var exception = Assert.Throws<InvalidTemplateFormatException>(() =>
+            _parser.Parse(template));
+
+        Assert.Contains("Invalid parameter format", exception.Message);
+        Assert.Equal("template", exception.ParamName);
+    }
+
+    [Fact]
+    public void Parse_ParameterWithoutType_ThrowsInvalidTemplateFormatException()
+    {
+        var exception = Assert.Throws<InvalidTemplateFormatException>(() =>
+            _parser.Parse("/route/{id}"));
+
+        Assert.Contains("Invalid parameter format", exception.Message);
+        Assert.Contains("{id}", exception.Message);
+        Assert.Equal("template", exception.ParamName);
+    }
+
+    [Fact]
+    public void Parse_EmptyParameterName_ThrowsInvalidTemplateFormatException()
+    {
+        var exception = Assert.Throws<InvalidTemplateFormatException>(() =>
+            _parser.Parse("/route/{:int}"));
+
+        Assert.Contains("Invalid parameter format in segment", exception.Message);
+        Assert.Equal("template", exception.ParamName);
+    }
+
+    [Fact]
+    public void Parse_DuplicateParameterNames_ThrowsInvalidTemplateFormatException()
+    {
+        var exception = Assert.Throws<InvalidTemplateFormatException>(() =>
+            _parser.Parse("/route/{id:int}/users/{id:string}"));
+
+        Assert.Contains("Duplicate parameter name", exception.Message);
+        Assert.Contains("id", exception.Message);
         Assert.Equal("template", exception.ParamName);
     }
 
