@@ -22,7 +22,11 @@ public abstract class BenchmarkBase
         }
     }
 
-    private void RegisterRouteWithHandler(int index, Guid staticGuid, DateTime staticDateTime, Action<int> handlerAction)
+    private void RegisterRouteWithHandler(
+        int index, 
+        Guid staticGuid, 
+        DateTime staticDateTime, 
+        Action<int> handlerAction)
     {
         var routeType = index % 10;
 

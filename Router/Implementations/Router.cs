@@ -57,10 +57,10 @@ public class Router : IRouter
     {
         var routeObj = routeParser.Parse(route);
 
-        var routeRegistartion = routeRegistry.ResolveRoute(routeObj);
+        var routeRegistration = routeRegistry.ResolveRoute(routeObj);
 
-        var templateObj = routeRegistartion.Template;
-        var handlerObj = routeRegistartion.Handler;
+        var templateObj = routeRegistration.Template;
+        var handlerObj = routeRegistration.Handler;
 
         var modelBindResult = modelBinder.ModelBind(templateObj, routeObj);
 
@@ -71,10 +71,10 @@ public class Router : IRouter
     {
         var routeObj = routeParser.Parse(route);
 
-        var routeRegistartion = routeRegistry.ResolveRoute(routeObj);
+        var routeRegistration = routeRegistry.ResolveRoute(routeObj);
 
-        var templateObj = routeRegistartion.Template;
-        var handlerObj = routeRegistartion.Handler;
+        var templateObj = routeRegistration.Template;
+        var handlerObj = routeRegistration.Handler;
 
         var modelBindResult = modelBinder.ModelBind(templateObj, routeObj);
 
@@ -86,10 +86,10 @@ public class Router : IRouter
         var templateObj = templateParser.Parse(template);
         var handlerObj = handlerMetadataParser.Parse(action);
 
-        var routeRegistartion = new RouteRegistration(templateObj, handlerObj);
+        var routeRegistration = new RouteRegistration(templateObj, handlerObj);
 
-        validatorRouteRegistration.ValidateParity(routeRegistartion);
+        validatorRouteRegistration.ValidateParity(routeRegistration);
 
-        routeRegistry.Save(routeRegistartion);
+        routeRegistry.Save(routeRegistration);
     }
 }
