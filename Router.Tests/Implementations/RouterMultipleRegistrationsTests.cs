@@ -1,4 +1,4 @@
-using Factories;
+using Router.Factories;
 using Xunit;
 
 namespace Router.Tests.Implementations;

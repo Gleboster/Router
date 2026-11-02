@@ -1,4 +1,4 @@
-﻿namespace Interfaces;
+﻿namespace Router.Interfaces;
 
 public interface IRouter
 {

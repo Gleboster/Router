@@ -1,4 +1,4 @@
-using Interfaces;
+using Router.Interfaces;
 using Router.Components.Binding;
 using Router.Components.Compilers;
 using Router.Components.Execution;
@@ -6,7 +6,7 @@ using Router.Components.Parsers;
 using Router.Components.Registry;
 using Router.Components.Validation;
 
-namespace Factories;
+namespace Router.Factories;
 
 public class RouterFactory
 {
@@ -20,7 +20,7 @@ public class RouterFactory
         var modelBinder = new ModelBinder();
         var handlerRunner = new HandlerRunner();
 
-        return new Router.Implementations.Router(
+        return new Implementations.Router(
             templateParser,
             handlerMetadataParser,
             routeParser,
