@@ -8,6 +8,9 @@
 
   <ItemGroup>
     <Folder Include="Factories\" />
+	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+		<_Parameter1>Router.Tests</_Parameter1>
+	</AssemblyAttribute>
   </ItemGroup>
 
 </Project>

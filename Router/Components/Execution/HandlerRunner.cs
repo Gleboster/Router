@@ -3,7 +3,7 @@ using Router.Models.Handlers;
 
 namespace Router.Components.Execution;
 
-public class HandlerRunner
+internal class HandlerRunner
 {
     public void RunHandle(HandlerMetadata handlerMetadata, ModelBindResult modelBindResult)
     {

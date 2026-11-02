@@ -3,7 +3,7 @@ using Router.Models.Segments;
 
 namespace Router.Components.Registry.Trie;
 
-public sealed class SegmentNode
+internal class SegmentNode
 {
     private readonly TemplateSegment segment;
     private readonly List<SegmentNode> children;

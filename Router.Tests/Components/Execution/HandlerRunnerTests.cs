@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Router.Tests.Components.Execution;
 
-public sealed class HandlerRunnerTests
+public class HandlerRunnerTests
 {
     private readonly HandlerRunner _runner;
     private readonly HandlerMetadataParser _handlerParser;

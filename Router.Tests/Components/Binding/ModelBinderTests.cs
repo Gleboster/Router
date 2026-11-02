@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Router.Tests.Components.Binding;
 
-public sealed class ModelBinderTests
+public class ModelBinderTests
 {
     private readonly ModelBinder _binder = new();
     private readonly TemplateParser _parser = new();

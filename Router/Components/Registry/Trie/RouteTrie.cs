@@ -5,7 +5,7 @@ using Router.Utils;
 
 namespace Router.Components.Registry.Trie;
 
-public sealed class RouteTrie
+internal class RouteTrie
 {
     private readonly SegmentNode rootNode;
 

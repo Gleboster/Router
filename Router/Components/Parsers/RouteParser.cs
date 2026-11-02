@@ -5,7 +5,7 @@ using Router.Models.Variables;
 
 namespace Router.Components.Parsers;
 
-public class RouteParser
+internal class RouteParser
 {
     public Route Parse(string route)
     {

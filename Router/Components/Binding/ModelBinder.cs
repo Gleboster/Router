@@ -7,7 +7,7 @@ using Router.Utils;
 
 namespace Router.Components.Binding;
 
-public class ModelBinder
+internal class ModelBinder
 {
     public ModelBindResult ModelBind(Template template, Route route)
     {

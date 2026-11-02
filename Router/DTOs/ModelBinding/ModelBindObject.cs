@@ -1,6 +1,6 @@
 ﻿namespace Router.DTOs;
 
-public class ModelBindObject(string name, Type type, object value) 
+internal class ModelBindObject(string name, Type type, object value) 
 {
     public string Name { get; } = name;
 

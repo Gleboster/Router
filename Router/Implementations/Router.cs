@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Router.Implementations;
 
-public class Router : IRouter
+internal class Router : IRouter
 {
     private readonly TemplateParser templateParser;
     private readonly HandlerMetadataParser handlerMetadataParser;
@@ -26,7 +26,14 @@ public class Router : IRouter
 
     private readonly HandlerRunner handlerRunner;
 
-    public Router(TemplateParser templateParser, HandlerMetadataParser handlerMetadataParser, RouteParser routeParser, ValidatorRouteRegistration validatorRouteRegistration, RouteRegistry routeRegistry, ModelBinder modelBinder, HandlerRunner handlerRunner)
+    public Router(
+        TemplateParser templateParser, 
+        HandlerMetadataParser handlerMetadataParser, 
+        RouteParser routeParser, 
+        ValidatorRouteRegistration validatorRouteRegistration, 
+        RouteRegistry routeRegistry, 
+        ModelBinder modelBinder, 
+        HandlerRunner handlerRunner)
     {
         this.templateParser = templateParser;
         this.handlerMetadataParser = handlerMetadataParser;

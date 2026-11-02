@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Router.Tests.Components.Parsers;
 
-public sealed class HandlerMetadataParserTests
+public class HandlerMetadataParserTests
 {
     private readonly HandlerMetadataParser _parser = new();
 

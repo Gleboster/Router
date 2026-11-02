@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Router.Tests.Components.Validation;
 
-public sealed class ValidatorRouteRegistrationTests
+public class ValidatorRouteRegistrationTests
 {
     private readonly ValidatorRouteRegistration _validator = new();
     private readonly TemplateParser _templateParser = new();

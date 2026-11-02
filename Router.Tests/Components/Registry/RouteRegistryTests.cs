@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Router.Tests.Components.Registry;
 
-public sealed class RouteRegistryTests
+public class RouteRegistryTests
 {
     private readonly RouteRegistry _registry;
     private readonly TemplateParser _templateParser;

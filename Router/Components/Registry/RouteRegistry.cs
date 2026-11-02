@@ -4,7 +4,7 @@ using Router.Models.Routes;
 
 namespace Router.Components.Registry;
 
-public class RouteRegistry
+internal class RouteRegistry
 {
     private readonly RouteTrie routeTrie;
 

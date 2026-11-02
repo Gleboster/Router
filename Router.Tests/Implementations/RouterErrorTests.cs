@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Router.Tests.Implementations;
 
-public sealed class RouterErrorTests
+public class RouterErrorTests
 {
     private readonly RouterFixture _fixture = new();
 

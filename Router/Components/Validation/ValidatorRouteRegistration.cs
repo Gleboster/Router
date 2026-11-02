@@ -4,7 +4,7 @@ using Router.Models.Templates;
 
 namespace Router.Components.Validation;
 
-public class ValidatorRouteRegistration
+internal class ValidatorRouteRegistration
 {
     public void ValidateParity(RouteRegistration registration)
     {

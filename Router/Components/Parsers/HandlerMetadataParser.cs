@@ -4,7 +4,7 @@ using Router.Models.Variables;
 
 namespace Router.Components.Compilers;
 
-public class HandlerMetadataParser
+internal class HandlerMetadataParser
 {
     public HandlerMetadata Parse(Delegate action)
     {

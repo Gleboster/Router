@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 
 namespace Router.Models.Templates;
 
-public sealed class Template
+internal class Template
 {
     private readonly FrozenDictionary<string, RouteVariable> variablesByName;
 

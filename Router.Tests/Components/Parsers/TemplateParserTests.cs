@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Router.Tests.Components.Parsers;
 
-public sealed class TemplateParserTests
+public class TemplateParserTests
 {
     private readonly TemplateParser _parser = new();
 

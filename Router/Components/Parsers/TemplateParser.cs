@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace Router.Components.Compilers;
 
-public class TemplateParser
+internal class TemplateParser
 {
     private static readonly Regex SegmentRegex = new(
         @"\{(?<name>[^:}]+):(?<type>[^}]+)\}",

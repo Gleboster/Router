@@ -3,7 +3,7 @@ using Router.Interfaces;
 
 namespace Router.Tests.Fixtures;
 
-public sealed class RouterFixture
+public class RouterFixture
 {
     private readonly RouterFactory _factory = new();
 

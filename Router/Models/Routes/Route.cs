@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace Router.Models.Routes;
 
-public sealed class Route
+internal class Route
 {
     private readonly ReadOnlyCollection<RouteSegment> segments;
     public IReadOnlyList<RouteSegment> Segments => segments;

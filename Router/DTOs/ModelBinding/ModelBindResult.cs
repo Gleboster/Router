@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 
 namespace Router.DTOs.ModelBinding;
 
-public class ModelBindResult
+internal class ModelBindResult
 {
     private readonly FrozenDictionary<string, ModelBindObject> valuesByName;
 

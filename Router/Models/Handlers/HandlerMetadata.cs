@@ -5,7 +5,7 @@ using System.Reflection;
 namespace Router.Models.Handlers;
 
 
-public sealed class HandlerMetadata
+internal class HandlerMetadata
 {
     private readonly Delegate action;
     private readonly FrozenDictionary<string, RouteVariable> variablesByName;
