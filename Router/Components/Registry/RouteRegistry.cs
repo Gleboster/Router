@@ -6,7 +6,7 @@ namespace Router.Components.Registry;
 
 public class RouteRegistry
 {
-    private RouteTrie routeTrie;
+    private readonly RouteTrie routeTrie;
 
     public RouteRegistry()
     {
