@@ -15,8 +15,7 @@ public class HandlerRunner
     public async Task RunHandleAsync(
         HandlerMetadata handlerMetadata, 
         ModelBindResult modelBindResult,
-        CancellationToken cancellationToken
-        )
+        CancellationToken cancellationToken)
     {
         var args = GetArgs(handlerMetadata, modelBindResult);
 
