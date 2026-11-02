@@ -1,4 +1,5 @@
 using Router.Components.Compilers;
+using Router.Exceptions;
 using Router.Models.Variables;
 using System.Reflection;
 using Xunit;
@@ -144,7 +145,46 @@ public class HandlerMetadataParserTests
 
     #region Error Handling Tests
 
+    [Fact]
+    public void Parse_NullDelegate_ThrowsArgumentNullException()
+    {
+        var exception = Assert.Throws<ArgumentNullException>(() => _parser.Parse(null));
 
+        Assert.Equal("action", exception.ParamName);
+    }
+
+    [Fact]
+    public void Parse_ParameterWithEmptyName_ThrowsInvalidHandlerSignatureException()
+    {
+        Action<int> handler = (_) => { };
+
+        var exception = Assert.Throws<InvalidHandlerSignatureException>(() => _parser.Parse(handler));
+
+        Assert.Contains("parameter", exception.Message.ToLower());
+        Assert.Contains("name", exception.Message.ToLower());
+        Assert.Equal("action", exception.ParamName);
+    }
+
+    [Fact]
+    public void Parse_ParameterWithNullName_ThrowsInvalidHandlerSignatureException()
+    {
+        // Создаём делегат с параметром без имени через динамическую генерацию
+        var dynamicMethod = new System.Reflection.Emit.DynamicMethod(
+            "TestMethod",
+            typeof(void),
+            new[] { typeof(int) });
+
+        var ilGenerator = dynamicMethod.GetILGenerator();
+        ilGenerator.Emit(System.Reflection.Emit.OpCodes.Ret);
+
+        var handler = dynamicMethod.CreateDelegate(typeof(Action<int>));
+
+        var exception = Assert.Throws<InvalidHandlerSignatureException>(() => _parser.Parse(handler));
+
+        Assert.Contains("parameter", exception.Message.ToLower());
+        Assert.Contains("name", exception.Message.ToLower());
+        Assert.Equal("action", exception.ParamName);
+    }
 
     #endregion
 
