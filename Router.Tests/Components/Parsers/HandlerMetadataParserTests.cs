@@ -51,7 +51,7 @@ public class HandlerMetadataParserTests
         Action<int> handler = (int id) => { };
 
         var metadata = _parser.Parse(handler);
-        var variable = metadata.GetVariableByName("id");
+        var variable = metadata.GetVariables().First();
 
         Assert.Equal("id", variable.Name);
         Assert.Equal(typeof(int), variable.Type);
@@ -64,18 +64,17 @@ public class HandlerMetadataParserTests
 
         var metadata = _parser.Parse(handler);
 
-        var userIdVar = metadata.GetVariableByName("userId");
-        var nameVar = metadata.GetVariableByName("name");
-        var sessionIdVar = metadata.GetVariableByName("sessionId");
+        string[] names = ["userId", "name", "sessionId"];
+        Type[] types = [typeof(int), typeof(string), typeof(Guid)];
 
-        Assert.Equal("userId", userIdVar.Name);
-        Assert.Equal(typeof(int), userIdVar.Type);
+        var i = 0;
+        foreach (var par in metadata.GetVariables())
+        {
+            Assert.Equal(names[i], par.Name);
+            Assert.Equal(types[i], par.Type);
 
-        Assert.Equal("name", nameVar.Name);
-        Assert.Equal(typeof(string), nameVar.Type);
-
-        Assert.Equal("sessionId", sessionIdVar.Name);
-        Assert.Equal(typeof(Guid), sessionIdVar.Type);
+            i++;
+        }
     }
 
     #endregion
@@ -145,16 +144,7 @@ public class HandlerMetadataParserTests
 
     #region Error Handling Tests
 
-    [Fact]
-    public void Parse_GetVariableByName_ThrowsWhenNotFound()
-    {
-        Action<int> handler = (int id) => { };
 
-        var metadata = _parser.Parse(handler);
-
-        Assert.Throws<KeyNotFoundException>(() =>
-            metadata.GetVariableByName("nonexistent"));
-    }
 
     #endregion
 
@@ -169,7 +159,7 @@ public class HandlerMetadataParserTests
 
         Assert.Equal(1, metadata.CountParameters);
 
-        var variable = metadata.GetVariableByName("id");
+        var variable = metadata.GetVariables().First();
         Assert.Equal("id", variable.Name);
         Assert.Equal(typeof(int), variable.Type);
     }
@@ -183,11 +173,17 @@ public class HandlerMetadataParserTests
 
         Assert.Equal(2, metadata.CountParameters);
 
-        var aVar = metadata.GetVariableByName("a");
-        var bVar = metadata.GetVariableByName("b");
+        string[] names = ["a", "b"];
+        Type[] types = [typeof(int), typeof(string)];
 
-        Assert.Equal(typeof(int), aVar.Type);
-        Assert.Equal(typeof(string), bVar.Type);
+        var i = 0;
+        foreach (var par in metadata.GetVariables())
+        {
+            Assert.Equal(names[i], par.Name);
+            Assert.Equal(types[i], par.Type);
+
+            i++;
+        }
     }
 
     [Fact]
@@ -201,7 +197,7 @@ public class HandlerMetadataParserTests
         Action<int> handler = foo;
 
         var metadata = _parser.Parse(handler);
-        var variable = metadata.GetVariableByName("id");
+        var variable = metadata.GetVariables().First();
 
         Assert.Equal(1, metadata.CountParameters);
         Assert.Equal("id", variable.Name);

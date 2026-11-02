@@ -25,7 +25,4 @@ internal class HandlerMetadata
 
     public IReadOnlyCollection<RouteVariable> GetVariables() 
         => variablesByName.Values;
-
-    public RouteVariable GetVariableByName(string name) 
-        => variablesByName[name];
 }
