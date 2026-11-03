@@ -2,6 +2,7 @@ using Router.Components.Compilers;
 using Router.Components.Execution;
 using Router.DTOs;
 using Router.DTOs.ModelBinding;
+using Router.Exceptions;
 using Xunit;
 
 namespace Router.Tests.Components.Execution;
@@ -403,6 +404,60 @@ public class HandlerRunnerTests
 
         // Assert
         Assert.Equal(3, invocationCount);
+    }
+
+    #endregion
+
+    #region Error Handling - Model Bind Interpretation
+
+    [Fact]
+    public void RunHandle_MissingParameterInBindResult_ThrowsModelBindInterpretationException()
+    {
+        // Arrange
+        Action<int, string> handler = (int id, string name) => { };
+        var metadata = _handlerParser.Parse(handler);
+        var bindResult = CreateBindResult(("id", typeof(int), 42));
+
+        // Act & Assert
+        var exception = Assert.Throws<InvalidModelBindResultException>(
+            () => _runner.RunHandle(metadata, bindResult));
+
+        Assert.Contains("'name'", exception.Message);
+        Assert.Contains("not found", exception.Message);
+    }
+
+    [Fact]
+    public void RunHandle_TypeMismatchInBindResult_ThrowsModelBindInterpretationException()
+    {
+        // Arrange
+        Action<int> handler = (int id) => { };
+        var metadata = _handlerParser.Parse(handler);
+        var bindResult = CreateBindResult(("id", typeof(string), "42"));
+
+        // Act & Assert
+        var exception = Assert.Throws<InvalidModelBindResultException>(
+            () => _runner.RunHandle(metadata, bindResult));
+
+        Assert.Contains("Type mismatch", exception.Message);
+        Assert.Contains("'id'", exception.Message);
+        Assert.Contains("Int32", exception.Message);
+        Assert.Contains("String", exception.Message);
+    }
+
+    [Fact]
+    public void RunHandle_CaseSensitiveParameterName_ThrowsModelBindInterpretationException()
+    {
+        // Arrange
+        Action<int> handler = (int userId) => { };
+        var metadata = _handlerParser.Parse(handler);
+        var bindResult = CreateBindResult(("UserId", typeof(int), 42));
+
+        // Act & Assert
+        var exception = Assert.Throws<InvalidModelBindResultException>(
+            () => _runner.RunHandle(metadata, bindResult));
+
+        Assert.Contains("'userId'", exception.Message);
+        Assert.Contains("not found", exception.Message);
     }
 
     #endregion

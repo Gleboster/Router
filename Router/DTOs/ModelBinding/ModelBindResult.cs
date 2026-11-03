@@ -15,16 +15,12 @@ internal class ModelBindResult
         valuesByName = variables.ToFrozenDictionary(
             variable => variable.Name);
     }
-    public object GetValueByNameWithType(string name, Type type)
+
+    public ModelBindObject GetValueByName(string name)
     {
-        if (!valuesByName.TryGetValue(name, out var value))
-            throw new KeyNotFoundException(name);
+        valuesByName.TryGetValue(name, out var value);
 
-        if (value.Type != type)
-            throw new InvalidOperationException(
-                $"Expected {type}, got {value.Type}");
-
-        return value.Value;
+        return value;
     }
 
 }
