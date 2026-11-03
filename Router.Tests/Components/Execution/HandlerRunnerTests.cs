@@ -357,7 +357,7 @@ public class HandlerRunnerTests
     #region Handler Execution
 
     [Fact]
-    public void RunHandle_HandlerThrowsException_PropagatesException()
+    public void RunHandle_HandlerThrowsException_WrapsInHandlerExecutionException()
     {
         // Arrange
         Action<int> handler = (int id) => { throw new InvalidOperationException("Test exception"); };
@@ -365,8 +365,11 @@ public class HandlerRunnerTests
         var bindResult = CreateBindResult(("id", typeof(int), 42));
 
         // Act & Assert
-        var exception = Assert.Throws<System.Reflection.TargetInvocationException>(
+        var exception = Assert.Throws<HandlerExecutionException>(
             () => _runner.RunHandle(metadata, bindResult));
+
+        Assert.Contains("Handler execution failed", exception.Message);
+        Assert.Contains("Test exception", exception.Message);
         Assert.IsType<InvalidOperationException>(exception.InnerException);
         Assert.Equal("Test exception", exception.InnerException?.Message);
     }

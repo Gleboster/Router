@@ -1,4 +1,5 @@
-﻿using Router.DTOs.ModelBinding;
+﻿using System.Reflection;
+using Router.DTOs.ModelBinding;
 using Router.Exceptions;
 using Router.Models.Handlers;
 using Router.Models.Variables;
@@ -11,17 +12,35 @@ internal class HandlerRunner
     {
         var args = GetArgs(handlerMetadata, modelBindResult);
 
-        handlerMetadata.Action.DynamicInvoke(args);
+        try
+        {
+            handlerMetadata.Action.DynamicInvoke(args);
+        }
+        catch (TargetInvocationException ex)
+        {
+            throw new HandlerExecutionException(
+                $"Handler execution failed: {ex.InnerException?.Message ?? ex.Message}",
+                ex.InnerException ?? ex);
+        }
     }
 
     public async Task RunHandleAsync(
-        HandlerMetadata handlerMetadata, 
+        HandlerMetadata handlerMetadata,
         ModelBindResult modelBindResult,
         CancellationToken cancellationToken)
     {
         var args = GetArgs(handlerMetadata, modelBindResult);
 
-        await Task.Run(() => handlerMetadata.Action.DynamicInvoke(args), cancellationToken);
+        try
+        {
+            await Task.Run(() => handlerMetadata.Action.DynamicInvoke(args), cancellationToken);
+        }
+        catch (TargetInvocationException ex)
+        {
+            throw new HandlerExecutionException(
+                $"Handler execution failed: {ex.InnerException?.Message ?? ex.Message}",
+                ex.InnerException ?? ex);
+        }
     }
 
     private object[] GetArgs(HandlerMetadata handlerMetadata, ModelBindResult modelBindResult)
