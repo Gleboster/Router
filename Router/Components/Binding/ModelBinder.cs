@@ -1,8 +1,10 @@
 ﻿using Router.DTOs;
 using Router.DTOs.ModelBinding;
+using Router.Exceptions;
 using Router.Models.Routes;
 using Router.Models.Segments;
 using Router.Models.Templates;
+using Router.Models.Variables;
 using Router.Utils;
 
 namespace Router.Components.Binding;
@@ -17,19 +19,13 @@ internal class ModelBinder
 
         foreach (var templateSegment in template.Segments)
         {
-            if (routeIndex >= route.Segments.Count)
-                throw new ArgumentException(
-                    $"Route has fewer segments than template requires. Expected at least {routeIndex + 1}, got {route.Segments.Count}.");
-
             var routeSegment = route.Segments[routeIndex];
 
             if (templateSegment is DynamicTemplateSegment dynamicSegment)
             {
                 var variable = dynamicSegment.RouteVariable;
 
-                if (!routeSegment.TryParseValue(variable.Type, out var parsedValue))
-                    throw new ArgumentException(
-                        $"Cannot convert value '{routeSegment.Value}' to type {variable.Type.Name} for parameter '{variable.Name}'.");
+                object parsedValue = GetParsedObject(routeSegment, variable);
 
                 var boundObject = new ModelBindObject(variable.Name, variable.Type, parsedValue);
                 boundObjects.Add(boundObject);
@@ -39,5 +35,16 @@ internal class ModelBinder
         }
 
         return new ModelBindResult(boundObjects);
+    }
+
+    private static object GetParsedObject(
+        RouteSegment routeSegment,
+        RouteVariable variable)
+    {
+        if (!routeSegment.TryParseValue(variable.Type, out var parsedValue))
+            throw new ModelBindingException(
+                $"Cannot convert value '{routeSegment.Value}' to type {variable.Type.Name}" +
+                $" for parameter '{variable.Name}'.");
+        return parsedValue;
     }
 }

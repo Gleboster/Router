@@ -414,7 +414,12 @@ public class ModelBinderTests
         var template = CreateTemplate("/{id:int}");
         var route = CreateRoute("abc");
 
-        Assert.ThrowsAny<Exception>(() => _binder.ModelBind(template, route));
+        var exception = Assert.Throws<ModelBindingException>(() => _binder.ModelBind(template, route));
+
+        Assert.Contains("Cannot convert", exception.Message);
+        Assert.Contains("'abc'", exception.Message);
+        Assert.Contains("Int32", exception.Message);
+        Assert.Contains("'id'", exception.Message);
     }
 
     [Fact]
@@ -423,7 +428,12 @@ public class ModelBinderTests
         var template = CreateTemplate("/{value:float}");
         var route = CreateRoute("not-a-number");
 
-        Assert.ThrowsAny<Exception>(() => _binder.ModelBind(template, route));
+        var exception = Assert.Throws<ModelBindingException>(() => _binder.ModelBind(template, route));
+
+        Assert.Contains("Cannot convert", exception.Message);
+        Assert.Contains("'not-a-number'", exception.Message);
+        Assert.Contains("Single", exception.Message);
+        Assert.Contains("'value'", exception.Message);
     }
 
     [Fact]
@@ -432,16 +442,26 @@ public class ModelBinderTests
         var template = CreateTemplate("/{id:guid}");
         var route = CreateRoute("not-a-guid");
 
-        Assert.ThrowsAny<Exception>(() => _binder.ModelBind(template, route));
+        var exception = Assert.Throws<ModelBindingException>(() => _binder.ModelBind(template, route));
+
+        Assert.Contains("Cannot convert", exception.Message);
+        Assert.Contains("'not-a-guid'", exception.Message);
+        Assert.Contains("Guid", exception.Message);
+        Assert.Contains("'id'", exception.Message);
     }
 
     [Fact]
-    public void ModelBind_InvalidDateTimeValue_ThrowsException()
+    public void ModelBind_InvalidDateTimeValue_ThrowsModelBindingException()
     {
         var template = CreateTemplate("/{when:datetime}");
         var route = CreateRoute("invalid-date");
 
-        Assert.ThrowsAny<Exception>(() => _binder.ModelBind(template, route));
+        var exception = Assert.Throws<ModelBindingException>(() => _binder.ModelBind(template, route));
+
+        Assert.Contains("Cannot convert", exception.Message);
+        Assert.Contains("'invalid-date'", exception.Message);
+        Assert.Contains("DateTime", exception.Message);
+        Assert.Contains("'when'", exception.Message);
     }
 
     #endregion
