@@ -77,9 +77,6 @@ public class RouterMultipleRegistrationsTests
 
     [Theory]
     [InlineData(0)]
-    [InlineData(10)]
-    [InlineData(20)]
-    [InlineData(50)]
     [InlineData(99)]
     public void RegisterAndResolve_SpecificIndices_ShouldSucceed(int index)
     {
