@@ -29,6 +29,8 @@ internal class HandlerRunner
         ModelBindResult modelBindResult,
         CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+
         var args = GetArgs(handlerMetadata, modelBindResult);
 
         try
