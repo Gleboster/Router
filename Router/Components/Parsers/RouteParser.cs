@@ -9,8 +9,7 @@ internal class RouteParser
 {
     public Route Parse(string route)
     {
-        if (string.IsNullOrWhiteSpace(route))
-            throw new ArgumentException("Route cannot be null or empty", nameof(route));
+        ArgumentNullException.ThrowIfNullOrEmpty(route, nameof(route));
 
         return new Route(SegmentRoute(route));
     }

@@ -43,6 +43,24 @@ public class RouterErrorTests
     #region Registration Errors
 
     [Fact]
+    public void Register_NullTemplate_ThrowsArgumentNullException()
+    {
+        var router = _fixture.CreateRouter();
+
+        Assert.Throws<ArgumentNullException>(() =>
+            router.RegisterRoute(null, () => { }));
+    }
+
+    [Fact]
+    public void Register_NullAction_ThrowsArgumentNullException()
+    {
+        var router = _fixture.CreateRouter();
+
+        Assert.Throws<ArgumentNullException>(() =>
+            router.RegisterRoute("/route", null as Action));
+    }
+
+    [Fact]
     public void Register_UnknownParameterType_Throws()
     {
         var router = _fixture.CreateRouter();

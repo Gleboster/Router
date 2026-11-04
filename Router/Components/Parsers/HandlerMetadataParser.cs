@@ -9,8 +9,7 @@ internal class HandlerMetadataParser
 {
     public HandlerMetadata Parse(Delegate action)
     {
-        if (action == null)
-            throw new ArgumentNullException(nameof(action));
+        ArgumentNullException.ThrowIfNull(action, nameof(action));
 
         var parameters = action.Method.GetParameters();
         var variables = new List<RouteVariable>();
