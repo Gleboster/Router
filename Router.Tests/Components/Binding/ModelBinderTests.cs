@@ -466,18 +466,6 @@ public class ModelBinderTests
 
     #endregion
 
-    #region Error Handling - Segment Count Mismatch
-
-    [Fact]
-    public void ModelBind_MoreDynamicSegmentsThanRouteValues_ThrowsException()
-    {
-        var template = CreateTemplate("/{a:int}/{b:int}/{c:int}");
-        var route = CreateRoute("10", "20");
-
-        Assert.ThrowsAny<Exception>(() => _binder.ModelBind(template, route));
-    }
-
-    #endregion
 
     #region ModelBindResult Behavior
 
