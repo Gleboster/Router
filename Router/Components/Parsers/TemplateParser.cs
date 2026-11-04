@@ -8,8 +8,12 @@ namespace Router.Components.Compilers;
 
 internal class TemplateParser
 {
-    private static readonly Regex SegmentRegex = new(
+    private static readonly Regex DynamicSegmentRegex = new(
         @"(?<!\{)\{(?<name>[^:{}]+):(?<type>[^{}]+)\}(?!\})",
+        RegexOptions.Compiled);
+
+    private static readonly Regex StaticSegmentRegex = new(
+        @"^[A-Za-z0-9\-._~]+$", 
         RegexOptions.Compiled);
 
     private static readonly Dictionary<string, Type> TypeMap = new()
@@ -39,7 +43,7 @@ internal class TemplateParser
 
         foreach (var part in parts)
         {
-            var match = SegmentRegex.Match(part);
+            var match = DynamicSegmentRegex.Match(part);
 
             if (match.Success &&
                 match.Length == part.Length)
@@ -76,8 +80,7 @@ internal class TemplateParser
                 $"Invalid parameter format in segment '{part}'. Expected format: {{name:type}}",
                 template);
 
-        if (string.IsNullOrEmpty(part) ||
-            !part.All(c => char.IsAsciiLetter(c) || char.IsAsciiDigit(c)))
+        if (string.IsNullOrEmpty(part) || StaticSegmentRegex.IsMatch(part))
             throw new InvalidTemplateFormatException(
                 $"Invalid static segment '{part}'. Only Latin letters and digits are allowed.",
                 template);
