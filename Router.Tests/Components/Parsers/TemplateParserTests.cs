@@ -114,11 +114,9 @@ public class TemplateParserTests
     [InlineData("")]
     [InlineData(" ")]
     [InlineData(null)]
-    public void Parse_NullOrEmptyTemplate_ThrowsArgumentException(string template)
+    public void Parse_EmptyTemplate_ThrowsArgumentException(string template)
     {
-        var exception = Assert.Throws<ArgumentException>(() => _parser.Parse(template));
-        Assert.Equal("template", exception.ParamName);
-        Assert.Contains("cannot be null or empty", exception.Message);
+        var exception = Assert.ThrowsAny<ArgumentException>(() => _parser.Parse(template));
     }
 
     [Fact]

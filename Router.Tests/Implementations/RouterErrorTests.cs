@@ -1,3 +1,4 @@
+using Router.Exceptions;
 using Router.Tests.Fixtures;
 using Xunit;
 
@@ -14,7 +15,7 @@ public class RouterErrorTests
     {
         var router = _fixture.CreateRouter();
 
-        Assert.ThrowsAny<Exception>(
+        Assert.Throws<RouteNotFoundException>(
             () => router.Route("/unknown/")
         );
     }
@@ -33,7 +34,7 @@ public class RouterErrorTests
             (int id) => { }
         );
 
-        Assert.ThrowsAny<Exception>(
+        Assert.Throws<RouteNotFoundException>(
             () => router.Route("/foo/not-an-int/")
         );
     }
@@ -48,7 +49,7 @@ public class RouterErrorTests
         var router = _fixture.CreateRouter();
 
         Assert.Throws<ArgumentNullException>(() =>
-            router.RegisterRoute(null, () => { }));
+            router.RegisterRoute(template: null, () => { }));
     }
 
     [Fact]
@@ -57,7 +58,7 @@ public class RouterErrorTests
         var router = _fixture.CreateRouter();
 
         Assert.Throws<ArgumentNullException>(() =>
-            router.RegisterRoute("/route", null as Action));
+            router.RegisterRoute("/route", action: null));
     }
 
     [Fact]
@@ -65,7 +66,7 @@ public class RouterErrorTests
     {
         var router = _fixture.CreateRouter();
 
-        Assert.ThrowsAny<Exception>(() =>
+        Assert.Throws<InvalidTemplateFormatException>(() =>
             router.RegisterRoute(
                 "/foo/{id:unknown}/",
                 (string id) => { }
@@ -78,7 +79,7 @@ public class RouterErrorTests
     {
         var router = _fixture.CreateRouter();
 
-        Assert.ThrowsAny<Exception>(() =>
+        Assert.Throws<RouteRegistrationMismatchException>(() =>
             router.RegisterRoute(
                 "/foo/{id:int}/",
                 (string id) => { }
@@ -97,7 +98,7 @@ public class RouterErrorTests
 
         router.RegisterRoute("/foo/{id:int}/", (int id) => { });
 
-        Assert.ThrowsAny<Exception>(() =>
+        Assert.Throws<DuplicateRouteException>(() =>
             router.RegisterRoute("/foo/{id:int}/", (int id) => { }));
     }
 
@@ -108,7 +109,7 @@ public class RouterErrorTests
 
         router.RegisterRoute("/foo/{id:int}/", (int id) => { });
 
-        Assert.ThrowsAny<Exception>(() =>
+        Assert.Throws<DuplicateRouteException>(() =>
             router.RegisterRoute("/foo/{value:int}/", (int value) => { }));
     }
 

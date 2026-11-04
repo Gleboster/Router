@@ -23,7 +23,7 @@ internal class TemplateParser
 
     public Template Parse(string template)
     {
-        ArgumentNullException.ThrowIfNullOrEmpty(template, nameof(template));
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(template, nameof(template));
 
         var (segments, variables) = SegmentTemplate(template);
         return new Template(segments, variables);

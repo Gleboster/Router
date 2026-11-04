@@ -148,7 +148,7 @@ public class HandlerMetadataParserTests
     [Fact]
     public void Parse_NullDelegate_ThrowsArgumentNullException()
     {
-        var exception = Assert.Throws<ArgumentNullException>(() => _parser.Parse(null));
+        var exception = Assert.Throws<ArgumentNullException>(() => _parser.Parse(action: null));
 
         Assert.Equal("action", exception.ParamName);
     }
