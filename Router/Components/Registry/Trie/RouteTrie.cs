@@ -1,4 +1,5 @@
-﻿using Router.Models.Registrations;
+﻿using Router.DTOs.Results;
+using Router.Models.Registrations;
 using Router.Models.Routes;
 using Router.Models.Segments;
 using Router.Utils;
@@ -14,7 +15,7 @@ internal class RouteTrie
         rootNode = new SegmentNode();
     }
 
-    public void Add(RouteRegistration routeRegistration)
+    public ResultAddingRouteTrieRegistration Add(RouteRegistration routeRegistration)
     {
         var currentNode = rootNode;
         var segments = routeRegistration.Template.Segments;
@@ -26,7 +27,11 @@ internal class RouteTrie
             currentNode = childNode;
         }
 
-        currentNode.SetRegistration(routeRegistration);
+        bool success = currentNode.SetRegistration(routeRegistration);
+
+        return success
+            ? ResultAddingRouteTrieRegistration.Success()
+            : ResultAddingRouteTrieRegistration.Duplicate();
     }
 
     public RouteRegistration ResolveRoute(Route route)
@@ -65,7 +70,7 @@ internal class RouteTrie
     {
         foreach (var child in parent.Children)
         {
-            if (child.Segment.Equal(segment))
+            if (child.Segment.HasSameSignature(segment))
             {
                 return child;
             }

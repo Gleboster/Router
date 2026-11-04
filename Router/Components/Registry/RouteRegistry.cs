@@ -1,4 +1,5 @@
 ﻿using Router.Components.Registry.Trie;
+using Router.DTOs.Results;
 using Router.Exceptions;
 using Router.Models.Registrations;
 using Router.Models.Routes;
@@ -16,7 +17,13 @@ internal class RouteRegistry
 
     public void Save(RouteRegistration registration)
     {
-        routeTrie.Add(registration);
+        var result = routeTrie.Add(registration);
+
+        if (result.Status == AddRouteStatus.Duplicate)
+            throw new DuplicateRouteException(
+                registration.Template.ToString(),
+                $"Route '{registration.Template}' is already registered. " +
+                $"Cannot register duplicate routes with the same structure.");
     }
 
     public RouteRegistration ResolveRoute(Route route)

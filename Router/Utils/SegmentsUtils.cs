@@ -26,7 +26,7 @@ public static class SegmentsUtils
         };
     }
 
-    public static bool Equal(
+    public static bool HasSameSignature(
         this TemplateSegment main, 
         TemplateSegment other)
     {
@@ -35,7 +35,6 @@ public static class SegmentsUtils
             (StaticTemplateSegment s1, StaticTemplateSegment s2) =>
                 string.Equals(s1.Value, s2.Value, stringComparison),
             (DynamicTemplateSegment d1, DynamicTemplateSegment d2) =>
-                d1.RouteVariable.Name == d2.RouteVariable.Name &&
                 d1.RouteVariable.Type == d2.RouteVariable.Type,
             _ => false
         };

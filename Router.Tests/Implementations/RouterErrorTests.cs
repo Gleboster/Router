@@ -69,4 +69,42 @@ public class RouterErrorTests
     }
 
     #endregion
+
+    #region Duplicate Route Errors
+
+    [Fact]
+    public void Register_DuplicateExactTemplate_Throws()
+    {
+        var router = _fixture.CreateRouter();
+
+        router.RegisterRoute("/foo/{id:int}/", (int id) => { });
+
+        Assert.ThrowsAny<Exception>(() =>
+            router.RegisterRoute("/foo/{id:int}/", (int id) => { }));
+    }
+
+    [Fact]
+    public void Register_DuplicateStructuralTemplate_Throws()
+    {
+        var router = _fixture.CreateRouter();
+
+        router.RegisterRoute("/foo/{id:int}/", (int id) => { });
+
+        Assert.ThrowsAny<Exception>(() =>
+            router.RegisterRoute("/foo/{value:int}/", (int value) => { }));
+    }
+
+    [Fact]
+    public void Register_DifferentTemplates_DoesNotThrow()
+    {
+        var router = _fixture.CreateRouter();
+
+        router.RegisterRoute("/foo/{id:int}/", (int id) => { });
+        router.RegisterRoute("/bar/{id:int}/", (int id) => { });
+        router.RegisterRoute("/foo/{id:string}/", (string id) => { });
+
+        // Should succeed without exceptions
+    }
+
+    #endregion
 }

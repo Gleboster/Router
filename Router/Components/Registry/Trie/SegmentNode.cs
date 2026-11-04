@@ -28,8 +28,12 @@ internal class SegmentNode
         children.Add(node);
     }
 
-    public void SetRegistration(RouteRegistration registration)
+    public bool SetRegistration(RouteRegistration registration)
     {
+        if (this.registration != null)
+            return false; // Duplicate detected
+
         this.registration = registration;
+        return true;
     }
 }
