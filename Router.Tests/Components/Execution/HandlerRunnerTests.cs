@@ -422,7 +422,7 @@ public class HandlerRunnerTests
         var bindResult = CreateBindResult(("id", typeof(int), 42));
 
         // Act & Assert
-        var exception = Assert.Throws<InvalidModelBindResultException>(
+        var exception = Assert.Throws<ModelBindingException>(
             () => _runner.RunHandle(metadata, bindResult));
 
         Assert.Contains("'name'", exception.Message);
@@ -438,7 +438,7 @@ public class HandlerRunnerTests
         var bindResult = CreateBindResult(("id", typeof(string), "42"));
 
         // Act & Assert
-        var exception = Assert.Throws<InvalidModelBindResultException>(
+        var exception = Assert.Throws<ModelBindingException>(
             () => _runner.RunHandle(metadata, bindResult));
 
         Assert.Contains("Type mismatch", exception.Message);
@@ -456,7 +456,7 @@ public class HandlerRunnerTests
         var bindResult = CreateBindResult(("UserId", typeof(int), 42));
 
         // Act & Assert
-        var exception = Assert.Throws<InvalidModelBindResultException>(
+        var exception = Assert.Throws<ModelBindingException>(
             () => _runner.RunHandle(metadata, bindResult));
 
         Assert.Contains("'userId'", exception.Message);

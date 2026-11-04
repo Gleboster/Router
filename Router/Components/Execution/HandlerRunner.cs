@@ -65,11 +65,11 @@ internal class HandlerRunner
         var modelBindObject = modelBindResult.GetValueByName(variable.Name);
 
         if (modelBindObject == null)
-            throw new InvalidModelBindResultException(
+            throw new ModelBindingException(
                 $"Parameter '{variable.Name}' not found in model binding results");
 
         if (modelBindObject.Type != variable.Type)
-            throw new InvalidModelBindResultException(
+            throw new ModelBindingException(
                 $"Type mismatch for parameter '{variable.Name}': " +
                 $"expected {variable.Type.Name}, got {modelBindObject.Type.Name}");
 
