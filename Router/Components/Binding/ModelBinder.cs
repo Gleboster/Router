@@ -37,7 +37,7 @@ internal class ModelBinder
         return new ModelBindResult(boundObjects);
     }
 
-    private static object GetParsedObject(
+    private object GetParsedObject(
         RouteSegment routeSegment,
         RouteVariable variable)
     {

@@ -16,7 +16,7 @@ internal class ValidatorRouteRegistration
         CheckTypeNameVariables(template, handler);
     }
 
-    private static void CheckTypeNameVariables(
+    private void CheckTypeNameVariables(
         Template template, 
         HandlerMetadata handler)
     {
@@ -42,7 +42,7 @@ internal class ValidatorRouteRegistration
         }
     }
 
-    private static void CheckCountVariables(
+    private void CheckCountVariables(
         Template template,
         HandlerMetadata handler)
     {

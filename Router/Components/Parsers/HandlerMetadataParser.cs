@@ -32,7 +32,7 @@ internal class HandlerMetadataParser
         );
     }
 
-    private static void EnsureValidNameParameter(int i, System.Reflection.ParameterInfo parameter)
+    private void EnsureValidNameParameter(int i, System.Reflection.ParameterInfo parameter)
     {
         if (string.IsNullOrWhiteSpace(parameter.Name) ||
             parameter.Name == "_")

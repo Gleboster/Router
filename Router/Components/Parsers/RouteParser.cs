@@ -14,7 +14,7 @@ internal class RouteParser
         return new Route(SegmentRoute(route));
     }
 
-    public IEnumerable<RouteSegment> SegmentRoute(string route)
+    private IEnumerable<RouteSegment> SegmentRoute(string route)
     {
         return route.Split("/", StringSplitOptions.RemoveEmptyEntries)
             .Select(val => new RouteSegment(val));

@@ -71,7 +71,7 @@ internal class TemplateParser
         return (segments, variables);
     }
 
-    private static void EnsureValidStaticSegment(string template, string part)
+    private void EnsureValidStaticSegment(string template, string part)
     {
         if (part.Contains('{') ||
             part.Contains('}') ||
@@ -86,7 +86,7 @@ internal class TemplateParser
                 template);
     }
 
-    private static Type GetSupportedType(string template, string name, string typeStr)
+    private Type GetSupportedType(string template, string name, string typeStr)
     {
         if (!TypeMap.TryGetValue(typeStr, out var type))
             throw new InvalidTemplateFormatException(
@@ -96,7 +96,10 @@ internal class TemplateParser
         return type;
     }
 
-    private static void EnsureUniqueVariableName(string template, HashSet<string> variableNames, string name)
+    private void EnsureUniqueVariableName(
+        string template, 
+        HashSet<string> variableNames,
+        string name)
     {
         if (variableNames.Contains(name))
             throw new InvalidTemplateFormatException(
