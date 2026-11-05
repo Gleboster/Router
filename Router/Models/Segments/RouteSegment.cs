@@ -1,3 +1,3 @@
 ﻿namespace Router.Models.Segments;
 
-public record RouteSegment(string Value) : Segment;
+internal record RouteSegment(string Value) : Segment;

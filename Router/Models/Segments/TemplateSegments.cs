@@ -2,6 +2,6 @@
 
 namespace Router.Models.Segments;
 
-public record TemplateSegment() : Segment;
-public record StaticTemplateSegment(string Value) : TemplateSegment;
-public record DynamicTemplateSegment(RouteVariable RouteVariable) : TemplateSegment;
+internal record TemplateSegment() : Segment;
+internal record StaticTemplateSegment(string Value) : TemplateSegment;
+internal record DynamicTemplateSegment(RouteVariable RouteVariable) : TemplateSegment;

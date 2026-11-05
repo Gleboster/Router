@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace Router.Utils;
 
-public static class SegmentsUtils
+internal static class SegmentsUtils
 {
     private readonly static StringComparison stringComparison = StringComparison.OrdinalIgnoreCase;
     

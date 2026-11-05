@@ -1,12 +1,12 @@
 ﻿namespace Router.DTOs.Results;
 
-public enum AddRouteStatus
+internal enum AddRouteStatus
 {
     Success,
     Duplicate
 }
 
-public record ResultAddingRouteTrieRegistration(AddRouteStatus Status)
+internal record ResultAddingRouteTrieRegistration(AddRouteStatus Status)
 {
     public static ResultAddingRouteTrieRegistration Success()
         => new(AddRouteStatus.Success);
